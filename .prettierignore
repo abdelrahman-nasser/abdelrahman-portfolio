@@ -1,0 +1,14 @@
+node_modules
+dist
+.angular
+coverage
+
+# Keep this tooling PR focused; these authored docs need a dedicated formatting change.
+README.md
+AGENTS.md
+docs/
+
+# Binary and generated static assets are outside Prettier's scope.
+public/**/*.ico
+public/**/*.pdf
+public/**/*.{png,jpg,jpeg,gif,webp,avif}
