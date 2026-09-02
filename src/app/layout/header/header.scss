@@ -9,7 +9,7 @@
   min-block-size: inherit;
   align-items: center;
   justify-content: space-between;
-  gap: var(--space-3);
+  gap: var(--space-2);
   padding-block: var(--space-3);
 }
 
@@ -90,6 +90,10 @@
   color: var(--color-primary-hover);
 }
 
+.site-header__cv-action-prefix {
+  display: none;
+}
+
 @media (width >= 48rem) {
   .site-header {
     min-block-size: 4.75rem;
@@ -97,5 +101,15 @@
 
   .site-header__navigation {
     display: flex;
+  }
+}
+
+@media (width >= 64rem) {
+  .site-header__inner {
+    gap: var(--space-3);
+  }
+
+  .site-header__cv-action-prefix {
+    display: inline;
   }
 }

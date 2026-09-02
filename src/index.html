@@ -6,6 +6,34 @@
     <base href="/" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <script>
+      // Apply the saved theme before Angular starts to prevent a pre-bootstrap color flash.
+      (() => {
+        let preference = 'system';
+
+        try {
+          const storedPreference = localStorage.getItem('portfolio-theme');
+
+          if (
+            storedPreference === 'system' ||
+            storedPreference === 'light' ||
+            storedPreference === 'dark'
+          ) {
+            preference = storedPreference;
+          }
+        } catch {}
+
+        if (preference === 'system') {
+          try {
+            preference = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+          } catch {
+            preference = 'light';
+          }
+        }
+
+        document.documentElement.dataset['theme'] = preference;
+      })();
+    </script>
   </head>
   <body>
     <app-root></app-root>
