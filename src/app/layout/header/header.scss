@@ -1,0 +1,101 @@
+.site-header {
+  min-block-size: 4.5rem;
+  border-block-end: 1px solid var(--color-border);
+  background: var(--color-bg-surface);
+}
+
+.site-header__inner {
+  display: flex;
+  min-block-size: inherit;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding-block: var(--space-3);
+}
+
+.site-header__brand,
+.site-header__navigation-link,
+.site-header__cv-action {
+  text-decoration: none;
+}
+
+.site-header__brand {
+  flex-shrink: 0;
+  color: var(--color-text-primary);
+  font-size: var(--font-size-body-lg);
+  font-weight: var(--font-weight-bold);
+}
+
+.site-header__navigation {
+  display: none;
+  align-items: stretch;
+  align-self: stretch;
+  gap: var(--space-5);
+}
+
+.site-header__navigation-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  color: var(--color-text-secondary);
+  font-weight: var(--font-weight-medium);
+  transition: color var(--duration-fast) var(--ease-standard);
+}
+
+.site-header__navigation-link::after {
+  position: absolute;
+  inset-block-end: calc(-1 * var(--space-3) - 1px);
+  inset-inline: 0;
+  block-size: 2px;
+  background: var(--color-primary);
+  content: '';
+  opacity: 0;
+  transform: scaleX(0.5);
+  transition:
+    opacity var(--duration-fast) var(--ease-standard),
+    transform var(--duration-fast) var(--ease-standard);
+}
+
+.site-header__navigation-link:hover,
+.site-header__navigation-link--active {
+  color: var(--color-text-primary);
+}
+
+.site-header__navigation-link--active::after {
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+.site-header__cv-action {
+  display: inline-flex;
+  min-block-size: 2.75rem;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  padding-inline: var(--space-4);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  color: var(--color-primary);
+  font-weight: var(--font-weight-semibold);
+  transition:
+    border-color var(--duration-fast) var(--ease-standard),
+    background-color var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard);
+}
+
+.site-header__cv-action:hover,
+.site-header__cv-action--active {
+  border-color: var(--color-primary);
+  background: var(--color-primary-soft);
+  color: var(--color-primary-hover);
+}
+
+@media (width >= 48rem) {
+  .site-header {
+    min-block-size: 4.75rem;
+  }
+
+  .site-header__navigation {
+    display: flex;
+  }
+}
