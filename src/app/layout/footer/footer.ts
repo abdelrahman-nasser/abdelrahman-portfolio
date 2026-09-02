@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
+import { portfolioProfile } from '../../content';
+
 interface FooterLink {
   readonly label: string;
   readonly url: string;
@@ -13,6 +15,8 @@ interface FooterLink {
   templateUrl: './footer.html',
 })
 export class Footer {
+  protected readonly profile = portfolioProfile;
+
   protected readonly internalLinks: readonly FooterLink[] = [
     { label: 'Projects', url: '/projects' },
     { label: 'Experience', url: '/experience' },
@@ -22,8 +26,8 @@ export class Footer {
   ];
 
   protected readonly profileLinks: readonly FooterLink[] = [
-    { label: 'Email', url: 'mailto:abdelrahman.n.hegab@outlook.com' },
-    { label: 'LinkedIn', url: 'https://linkedin.com/in/abdelrahman-nasser' },
-    { label: 'GitHub', url: 'https://github.com/abdelrahman-nasser' },
+    { label: 'Email', url: `mailto:${portfolioProfile.email}` },
+    { label: 'LinkedIn', url: portfolioProfile.linkedin },
+    { label: 'GitHub', url: portfolioProfile.github },
   ];
 }

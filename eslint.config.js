@@ -34,6 +34,17 @@ module.exports = defineConfig([
       ],
       eqeqeq: 'error',
       'no-console': ['warn', { allow: ['warn', 'error'] }],
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              group: ['docs/**', '**/docs/**'],
+              message: 'Research documentation must not be imported into runtime source.',
+            },
+          ],
+        },
+      ],
     },
   },
   {

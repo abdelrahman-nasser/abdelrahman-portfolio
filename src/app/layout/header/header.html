@@ -1,6 +1,6 @@
 <header class="site-header">
   <div class="site-header__inner container">
-    <a class="site-header__brand" routerLink="/" (click)="closeMenu()">Abdelrahman Hegab</a>
+    <a class="site-header__brand" routerLink="/" (click)="closeMenu()">{{ profile.name }}</a>
 
     <nav class="site-header__navigation" aria-label="Primary">
       @for (item of navigationItems; track item.path) {

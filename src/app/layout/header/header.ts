@@ -1,6 +1,7 @@
 import { Component, ElementRef, HostListener, signal, viewChild } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 
+import { portfolioProfile } from '../../content';
 import { ThemeToggle } from '../../shared/components/theme-toggle/theme-toggle';
 
 interface NavigationItem {
@@ -18,6 +19,7 @@ export class Header {
   private readonly menuTrigger = viewChild.required<ElementRef<HTMLButtonElement>>('menuTrigger');
 
   protected readonly isMenuOpen = signal(false);
+  protected readonly profile = portfolioProfile;
   protected readonly navigationItems: readonly NavigationItem[] = [
     { label: 'Experience', path: '/experience' },
     { label: 'Projects', path: '/projects' },
