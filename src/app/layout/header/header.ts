@@ -1,13 +1,15 @@
 import { Component } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 
+import { ThemeToggle } from '../../shared/components/theme-toggle/theme-toggle';
+
 interface NavigationItem {
   readonly label: string;
   readonly path: string;
 }
 
 @Component({
-  imports: [RouterLink, RouterLinkActive],
+  imports: [RouterLink, RouterLinkActive, ThemeToggle],
   selector: 'app-header',
   styleUrl: './header.scss',
   templateUrl: './header.html',

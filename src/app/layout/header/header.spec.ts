@@ -28,5 +28,6 @@ describe('Header', () => {
       '/contact',
     ]);
     expect(compiled.querySelector('.site-header__cv-action')?.getAttribute('href')).toBe('/cv');
+    expect(compiled.querySelector('app-theme-toggle')).not.toBeNull();
   });
 });

@@ -15,13 +15,15 @@
       }
     </nav>
 
+    <app-theme-toggle />
+
     <a
       class="site-header__cv-action"
       routerLink="/cv"
       routerLinkActive="site-header__cv-action--active"
       ariaCurrentWhenActive="page"
     >
-      Download CV
+      <span class="site-header__cv-action-prefix">Download </span>CV
     </a>
   </div>
 </header>
