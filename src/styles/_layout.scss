@@ -1,0 +1,19 @@
+.container {
+  width: 100%;
+  max-width: min(
+    var(--container-max),
+    calc(var(--container-content) + var(--container-padding) + var(--container-padding))
+  );
+  margin-inline: auto;
+  padding-inline: var(--container-padding);
+}
+
+.reading-container {
+  width: 100%;
+  max-width: var(--container-reading);
+  margin-inline: auto;
+}
+
+.section {
+  padding-block: var(--section-space);
+}
