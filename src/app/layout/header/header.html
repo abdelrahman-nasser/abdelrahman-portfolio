@@ -1,0 +1,27 @@
+<header class="site-header">
+  <div class="site-header__inner container">
+    <a class="site-header__brand" routerLink="/">Abdelrahman Hegab</a>
+
+    <nav class="site-header__navigation" aria-label="Primary">
+      @for (item of navigationItems; track item.path) {
+        <a
+          class="site-header__navigation-link"
+          [routerLink]="item.path"
+          routerLinkActive="site-header__navigation-link--active"
+          ariaCurrentWhenActive="page"
+        >
+          {{ item.label }}
+        </a>
+      }
+    </nav>
+
+    <a
+      class="site-header__cv-action"
+      routerLink="/cv"
+      routerLinkActive="site-header__cv-action--active"
+      ariaCurrentWhenActive="page"
+    >
+      Download CV
+    </a>
+  </div>
+</header>
