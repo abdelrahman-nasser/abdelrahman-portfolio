@@ -130,8 +130,20 @@ describe('ProjectsPage', () => {
     expect(component).toBe(ProjectsPage);
   });
 
-  it('maintains exactly 7 static routes in the route configuration', () => {
-    expect(routes).toHaveLength(7);
+  it('defines the three canonical project paths as explicit static routes', () => {
+    const projectDetailPaths = routes
+      .map((route) => route.path)
+      .filter((path) => path?.startsWith('projects/'));
+
+    expect(projectDetailPaths).toEqual([
+      'projects/upland-filebound',
+      'projects/moj-lawyer-licensing',
+      'projects/scega-event-licensing',
+    ]);
+  });
+
+  it('maintains exactly 10 static routes in the route configuration', () => {
+    expect(routes).toHaveLength(10);
   });
 
   function projectCards(): readonly ProjectCard[] {

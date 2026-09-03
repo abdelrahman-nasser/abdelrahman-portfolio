@@ -1,0 +1,25 @@
+<article class="project-case-study section">
+  <app-page-container>
+    <a class="project-case-study__back-link" routerLink="/projects">
+      <span aria-hidden="true">&larr;</span>
+      <span>Back to Projects</span>
+    </a>
+
+    <header class="project-case-study__header">
+      <p class="project-case-study__context">Case Study</p>
+      <h1>{{ project().title }}</h1>
+      <p class="project-case-study__subtitle">{{ project().subtitle }}</p>
+      <p class="project-case-study__summary">{{ project().summary }}</p>
+
+      <ul class="project-case-study__tags" [attr.aria-label]="project().title + ' technologies'">
+        @for (tag of project().tags; track tag) {
+          <li>{{ tag }}</li>
+        }
+      </ul>
+    </header>
+
+    <div class="project-case-study__body">
+      <ng-content />
+    </div>
+  </app-page-container>
+</article>
