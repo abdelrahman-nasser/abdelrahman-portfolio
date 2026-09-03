@@ -3,7 +3,11 @@ import { provideRouter, type Route } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
 
 import { routes } from '../../../app.routes';
-import { portfolioProjects, uplandFileBoundCaseStudy } from '../../../content';
+import {
+  mojLawyerLicensingCaseStudy,
+  portfolioProjects,
+  uplandFileBoundCaseStudy,
+} from '../../../content';
 import { ProjectDetailPage } from './project-detail-page';
 import { resolvePortfolioProject } from './project-detail-route';
 
@@ -77,20 +81,39 @@ describe('ProjectDetailPage', () => {
     expect(compiled?.textContent).toContain('nearly five years');
   });
 
-  it.each(['/projects/moj-lawyer-licensing', '/projects/scega-event-licensing'])(
-    'keeps %s metadata-only until its dedicated case-study PR',
-    async (route) => {
-      const harness = await RouterTestingHarness.create();
+  it('renders MOJ long-form content through the shared shell with semantic headings and lists', async () => {
+    const harness = await RouterTestingHarness.create();
 
-      await harness.navigateByUrl(route, ProjectDetailPage);
+    await harness.navigateByUrl('/projects/moj-lawyer-licensing', ProjectDetailPage);
 
-      const compiled = harness.routeNativeElement;
+    const compiled = harness.routeNativeElement;
+    const sectionHeadings = Array.from(
+      compiled?.querySelectorAll('.case-study-section > h2') ?? [],
+    );
 
-      expect(compiled?.querySelectorAll('h1')).toHaveLength(1);
-      expect(compiled?.querySelector('.case-study-content')).toBeNull();
-      expect(compiled?.querySelectorAll('h2')).toHaveLength(0);
-    },
-  );
+    expect(compiled?.querySelectorAll('article.project-case-study')).toHaveLength(1);
+    expect(compiled?.querySelectorAll('h1')).toHaveLength(1);
+    expect(sectionHeadings.map((heading) => heading.textContent?.trim())).toEqual(
+      mojLawyerLicensingCaseStudy.sections.map((section) => section.title),
+    );
+    expect(compiled?.querySelectorAll('.case-study-section p').length).toBeGreaterThan(0);
+    expect(compiled?.querySelectorAll('.case-study-section ul').length).toBeGreaterThan(0);
+    expect(compiled?.textContent).toContain('Vue 2');
+    expect(compiled?.textContent).toContain('path-based Micro Frontend');
+    expect(compiled?.textContent).not.toMatch(/Angular|Module Federation|microservices/i);
+  });
+
+  it('keeps SCEGA metadata-only until its dedicated case-study PR', async () => {
+    const harness = await RouterTestingHarness.create();
+
+    await harness.navigateByUrl('/projects/scega-event-licensing', ProjectDetailPage);
+
+    const compiled = harness.routeNativeElement;
+
+    expect(compiled?.querySelectorAll('h1')).toHaveLength(1);
+    expect(compiled?.querySelector('.case-study-content')).toBeNull();
+    expect(compiled?.querySelectorAll('h2')).toHaveLength(0);
+  });
 });
 
 describe('resolvePortfolioProject', () => {
