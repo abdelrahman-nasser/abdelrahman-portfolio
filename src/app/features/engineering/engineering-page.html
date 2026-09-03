@@ -1,5 +1,145 @@
-<section class="section">
+<section class="engineering-page" aria-labelledby="engineering-title">
   <app-page-container>
-    <h1>Engineering</h1>
+    <header class="engineering-page__header">
+      <p class="engineering-page__eyebrow">Technical philosophy</p>
+      <h1 id="engineering-title">Engineering</h1>
+      <p class="engineering-page__intro">
+        How I design, build, review, and evolve software systems across backend, frontend,
+        architecture, delivery, and AI-assisted engineering.
+      </p>
+    </header>
   </app-page-container>
+
+  <!-- ── Engineering Expertise ────────────────────────────────────────────── -->
+
+  <section class="engineering-page__section" aria-labelledby="ep-expertise-title">
+    <app-page-container>
+      <div class="ep-section-heading">
+        <p class="ep-eyebrow">Capability map</p>
+        <h2 id="ep-expertise-title">Engineering Expertise</h2>
+        <p class="ep-section-intro">
+          A senior full-stack toolkit built over a decade of enterprise SaaS, government digital
+          services, and production engineering.
+        </p>
+      </div>
+
+      <ul class="ep-expertise-grid" role="list">
+        @for (group of expertiseGroups; track group.id; let idx = $index) {
+          <li class="ep-expertise-group">
+            <div class="ep-expertise-group__header">
+              <span class="ep-expertise-group__num" aria-hidden="true">{{
+                (idx + 1).toString().padStart(2, '0')
+              }}</span>
+              <h3 class="ep-expertise-group__title">{{ group.title }}</h3>
+            </div>
+            <ul class="ep-expertise-group__items" role="list">
+              @for (item of group.items; track item) {
+                <li class="ep-expertise-group__item">{{ item }}</li>
+              }
+            </ul>
+          </li>
+        }
+      </ul>
+    </app-page-container>
+  </section>
+
+  <!-- ── Engineering Principles ────────────────────────────────────────────── -->
+
+  <section
+    class="engineering-page__section engineering-page__section--alt"
+    aria-labelledby="ep-principles-title"
+  >
+    <app-page-container>
+      <div class="ep-section-heading">
+        <p class="ep-eyebrow">Engineering approach</p>
+        <h2 id="ep-principles-title">How I Engineer</h2>
+        <p class="ep-section-intro">
+          The principles I use to make technical decisions, structure systems, and keep delivery
+          maintainable as products and teams evolve.
+        </p>
+      </div>
+
+      <ol class="ep-principles-list" role="list">
+        @for (principle of principles; track principle.id; let idx = $index) {
+          <li class="ep-principle">
+            <span class="ep-principle__num" aria-hidden="true">{{
+              (idx + 1).toString().padStart(2, '0')
+            }}</span>
+            <div class="ep-principle__body">
+              <h3 class="ep-principle__title">{{ principle.title }}</h3>
+              <p class="ep-principle__description">{{ principle.description }}</p>
+            </div>
+          </li>
+        }
+      </ol>
+    </app-page-container>
+  </section>
+
+  <!-- ── AI-Augmented Development ──────────────────────────────────────────── -->
+
+  <section class="engineering-page__section" aria-labelledby="ep-ai-title">
+    <app-page-container>
+      <div class="ep-section-heading">
+        <p class="ep-eyebrow">Modern engineering workflow</p>
+        <h2 id="ep-ai-title">{{ ai.title }}</h2>
+        <p class="ep-section-intro">{{ ai.statement }}</p>
+      </div>
+
+      <div class="ep-ai-body">
+        <div class="ep-ai-workflow">
+          <h3 class="ep-ai-col-label">Engineering Workflow</h3>
+          <ol class="ep-ai-steps" role="list">
+            @for (step of ai.workflow; track step; let idx = $index) {
+              <li class="ep-ai-step">
+                <span class="ep-ai-step__num" aria-hidden="true">{{
+                  (idx + 1).toString().padStart(2, '0')
+                }}</span>
+                <span class="ep-ai-step__name">{{ step }}</span>
+              </li>
+            }
+          </ol>
+        </div>
+
+        <div class="ep-ai-ownership">
+          <h3 class="ep-ai-col-label">Human Ownership</h3>
+          <p class="ep-ai-ownership__lead">
+            The following areas remain entirely human-owned at every stage of the workflow.
+          </p>
+          <ul class="ep-ai-ownership__list" role="list">
+            @for (area of ai.humanResponsibilities; track area) {
+              <li class="ep-ai-ownership__item">{{ area }}</li>
+            }
+          </ul>
+          <p class="ep-ai-ownership__note">
+            AI accelerates the work. Human judgment is responsible for correctness, security, and
+            final engineering decisions.
+          </p>
+        </div>
+      </div>
+    </app-page-container>
+  </section>
+
+  <!-- ── Closing CTA ────────────────────────────────────────────────────────── -->
+
+  <section
+    class="engineering-page__section engineering-page__section--cta"
+    aria-labelledby="ep-cta-title"
+  >
+    <app-page-container>
+      <div class="ep-cta">
+        <h2 id="ep-cta-title" class="ep-cta__heading">Built for Production, Not Just Delivery</h2>
+        <p class="ep-cta__body">
+          Good engineering is measured in systems that remain understandable, secure, and
+          maintainable long after the initial delivery. The case studies below show this in
+          practice.
+        </p>
+        <div class="ep-cta__actions">
+          <a class="ep-cta__action ep-cta__action--primary" routerLink="/projects">
+            View Selected Projects
+          </a>
+          <a class="ep-cta__action ep-cta__action--secondary" routerLink="/contact">Contact Me</a>
+        </div>
+      </div>
+    </app-page-container>
+  </section>
 </section>
