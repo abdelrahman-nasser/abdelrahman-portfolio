@@ -4,6 +4,8 @@ import { RouterLink } from '@angular/router';
 import { portfolioProfile } from '../../content';
 import { PageContainer } from '../../layout/page-container/page-container';
 import { AiEngineering } from './ai-engineering/ai-engineering';
+import { ContactCta } from './contact-cta/contact-cta';
+import { Credentials } from './credentials/credentials';
 import { EngineeringExpertise } from './engineering-expertise/engineering-expertise';
 import { EngineeringPrinciples } from './engineering-principles/engineering-principles';
 import { ExperiencePreview } from './experience-preview/experience-preview';
@@ -13,6 +15,8 @@ import { SelectedWork } from './selected-work/selected-work';
 @Component({
   imports: [
     AiEngineering,
+    ContactCta,
+    Credentials,
     EngineeringExpertise,
     EngineeringPrinciples,
     ExperiencePreview,
