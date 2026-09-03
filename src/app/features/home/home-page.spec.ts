@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 
 import {
+  engineeringPrinciples,
   portfolioExperience,
   portfolioProfile,
   professionalSnapshot,
@@ -155,6 +156,30 @@ describe('HomePage', () => {
   });
 
   it('retains exactly one h1 after adding Engineering Expertise', () => {
+    expect(compiled.querySelectorAll('h1')).toHaveLength(1);
+  });
+
+  it('composes Engineering Principles directly after Engineering Expertise', () => {
+    const principlesEl = compiled.querySelector('app-engineering-principles');
+
+    expect(principlesEl).not.toBeNull();
+    expect(principlesEl?.previousElementSibling?.matches('app-engineering-expertise')).toBe(true);
+    expect(principlesEl?.querySelector('section.engineering-principles')).not.toBeNull();
+  });
+
+  it('renders all canonical engineering principles in the homepage', () => {
+    const items = Array.from(compiled.querySelectorAll('.engineering-principles__item'));
+
+    expect(items).toHaveLength(engineeringPrinciples.length);
+
+    for (const [index, principle] of engineeringPrinciples.entries()) {
+      expect(
+        items[index]?.querySelector('.engineering-principles__title')?.textContent?.trim(),
+      ).toBe(principle.title);
+    }
+  });
+
+  it('retains exactly one h1 after adding Engineering Principles', () => {
     expect(compiled.querySelectorAll('h1')).toHaveLength(1);
   });
 });

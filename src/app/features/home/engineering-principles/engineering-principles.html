@@ -1,0 +1,26 @@
+<section class="engineering-principles" aria-labelledby="engineering-principles-title">
+  <app-page-container>
+    <div class="engineering-principles__heading">
+      <p class="engineering-principles__eyebrow">Engineering approach</p>
+      <h2 id="engineering-principles-title">How I Engineer</h2>
+      <p class="engineering-principles__intro">
+        The principles I use to make technical decisions, structure systems, and keep delivery
+        maintainable as products evolve.
+      </p>
+    </div>
+
+    <ol class="engineering-principles__grid" role="list">
+      @for (principle of principles; track principle.id; let idx = $index) {
+        <li class="engineering-principles__item">
+          <span class="engineering-principles__number" aria-hidden="true">{{
+            (idx + 1).toString().padStart(2, '0')
+          }}</span>
+          <div class="engineering-principles__body">
+            <h3 class="engineering-principles__title">{{ principle.title }}</h3>
+            <p class="engineering-principles__description">{{ principle.description }}</p>
+          </div>
+        </li>
+      }
+    </ol>
+  </app-page-container>
+</section>
