@@ -70,6 +70,14 @@ describe('HomePage', () => {
     }
   });
 
+  it('composes Selected Work directly after the Professional Snapshot', () => {
+    const selectedWork = compiled.querySelector('app-selected-work');
+
+    expect(selectedWork).not.toBeNull();
+    expect(selectedWork?.previousElementSibling?.matches('app-professional-snapshot')).toBe(true);
+    expect(selectedWork?.querySelector('section.selected-work')).not.toBeNull();
+  });
+
   it('keeps professional snapshot items informational and out of the tab order', () => {
     const interactiveElements = compiled.querySelectorAll(
       '.professional-snapshot__item a, .professional-snapshot__item button, .professional-snapshot__item input, .professional-snapshot__item select, .professional-snapshot__item textarea, .professional-snapshot__item [tabindex]',
