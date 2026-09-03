@@ -1,6 +1,28 @@
-import { portfolioProfile, portfolioProjects, publicPortfolioContent } from './index';
+import {
+  portfolioProfile,
+  portfolioProjects,
+  professionalSnapshot,
+  publicPortfolioContent,
+} from './index';
 
 describe('public portfolio content', () => {
+  it('should provide four complete and uniquely identified professional snapshot items', () => {
+    expect(professionalSnapshot).toHaveLength(4);
+
+    for (const item of professionalSnapshot) {
+      expect(item.value.trim()).not.toBe('');
+      expect(item.label.trim()).not.toBe('');
+      expect(item.description.trim()).not.toBe('');
+    }
+
+    expect(new Set(professionalSnapshot.map((item) => item.value)).size).toBe(
+      professionalSnapshot.length,
+    );
+    expect(new Set(professionalSnapshot.map((item) => item.label)).size).toBe(
+      professionalSnapshot.length,
+    );
+  });
+
   it('should keep project identifiers, slugs, routes, and order values unique', () => {
     expect(new Set(portfolioProjects.map((project) => project.id)).size).toBe(
       portfolioProjects.length,
