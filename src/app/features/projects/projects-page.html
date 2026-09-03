@@ -1,5 +1,22 @@
-<section class="section">
+<section class="projects-page section" aria-labelledby="projects-title">
   <app-page-container>
-    <h1>Projects</h1>
+    <header class="projects-page__header">
+      <h1 id="projects-title" class="projects-page__title">Selected Projects</h1>
+      <p class="projects-page__intro">
+        Selected enterprise SaaS and government platforms where I contributed across backend APIs,
+        frontend systems, integrations, architecture, security, testing, and production delivery.
+      </p>
+    </header>
+
+    <h2 class="visually-hidden">Project case studies</h2>
+
+    <div class="projects-page__grid">
+      @for (project of projects; track project.id) {
+        <app-project-card
+          [class.projects-page__project--featured]="project.featured"
+          [project]="project"
+        />
+      }
+    </div>
   </app-page-container>
 </section>
