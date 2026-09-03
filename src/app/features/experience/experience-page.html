@@ -1,5 +1,65 @@
-<section class="section">
+<section class="experience-page section" aria-labelledby="experience-title">
   <app-page-container>
-    <h1>Experience</h1>
+    <header class="experience-page__header">
+      <p class="experience-page__eyebrow">Career progression</p>
+      <h1 id="experience-title">Experience</h1>
+      <p class="experience-page__intro">
+        A decade of software engineering across enterprise SaaS, government digital services, and
+        full-stack product delivery.
+      </p>
+    </header>
+
+    <ol class="experience-page__timeline" aria-label="Professional experience">
+      @for (experience of experiences; track experience.id) {
+        <li class="experience-page__entry">
+          <article>
+            <header class="experience-page__entry-header">
+              <div class="experience-page__role">
+                <h2>{{ experience.role }}</h2>
+                <p class="experience-page__company">{{ experience.company }}</p>
+              </div>
+
+              <div class="experience-page__metadata">
+                @if (experience.startDate || experience.endDate) {
+                  <p class="experience-page__date">
+                    <span class="visually-hidden">Employment period: </span>
+                    @if (experience.startDate) {
+                      <time [attr.datetime]="experience.startDate">
+                        {{ formatDate(experience.startDate) }}
+                      </time>
+                    }
+                    @if (experience.startDate && experience.endDate) {
+                      <span aria-hidden="true"> – </span>
+                      <span class="visually-hidden"> to </span>
+                    }
+                    @if (experience.endDate) {
+                      <time [attr.datetime]="experience.endDate">
+                        {{ formatDate(experience.endDate) }}
+                      </time>
+                    }
+                  </p>
+                }
+
+                @if (experience.location) {
+                  <p class="experience-page__location">{{ experience.location }}</p>
+                }
+              </div>
+            </header>
+
+            @if (experience.summary) {
+              <p class="experience-page__summary">{{ experience.summary }}</p>
+            }
+
+            @if (experience.highlights.length > 0) {
+              <ul class="experience-page__highlights" aria-label="Selected responsibilities">
+                @for (highlight of experience.highlights; track highlight) {
+                  <li>{{ highlight }}</li>
+                }
+              </ul>
+            }
+          </article>
+        </li>
+      }
+    </ol>
   </app-page-container>
 </section>
