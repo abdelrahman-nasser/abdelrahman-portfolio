@@ -1,5 +1,6 @@
 import {
   findProjectCaseStudy,
+  mojLawyerLicensingCaseStudy,
   portfolioProfile,
   portfolioProjects,
   professionalSnapshot,
@@ -99,10 +100,18 @@ describe('public portfolio content', () => {
   });
 
   it('should protect MOJ frontend and backend architecture accuracy', () => {
-    const moj = findProject('moj-lawyer-licensing');
+    const moj = JSON.stringify({
+      project: findProject('moj-lawyer-licensing'),
+      caseStudy: mojLawyerLicensingCaseStudy,
+    });
 
-    expect(moj.tags).toContain('Vue.js');
-    expect(JSON.stringify(moj)).not.toMatch(/angular|module federation|microservices/i);
+    expect(moj).toMatch(/Vue(?:\.js)?(?: 2)?/);
+    expect(moj).toContain('TypeScript');
+    expect(moj).toContain('.NET 8');
+    expect(moj).toContain('ASP.NET Core 8');
+    expect(moj).toContain('EF Core');
+    expect(moj).toContain('path-based Micro Frontend');
+    expect(moj).not.toMatch(/angular|module federation|microservices/i);
   });
 
   it('should protect Upland from unsupported infrastructure claims', () => {
@@ -116,12 +125,14 @@ describe('public portfolio content', () => {
     );
   });
 
-  it('should publish detailed case-study content only for canonical Upland', () => {
-    expect(projectCaseStudies).toHaveLength(1);
+  it('should publish detailed case-study content only for canonical Upland and MOJ projects', () => {
+    expect(projectCaseStudies).toHaveLength(2);
     expect(uplandFileBoundCaseStudy.projectId).toBe('upland-filebound');
+    expect(mojLawyerLicensingCaseStudy.projectId).toBe('moj-lawyer-licensing');
     expect(findProject('upland-filebound').id).toBe(uplandFileBoundCaseStudy.projectId);
+    expect(findProject('moj-lawyer-licensing').id).toBe(mojLawyerLicensingCaseStudy.projectId);
     expect(findProjectCaseStudy('upland-filebound')).toBe(uplandFileBoundCaseStudy);
-    expect(findProjectCaseStudy('moj-lawyer-licensing')).toBeUndefined();
+    expect(findProjectCaseStudy('moj-lawyer-licensing')).toBe(mojLawyerLicensingCaseStudy);
     expect(findProjectCaseStudy('scega-event-licensing')).toBeUndefined();
   });
 
@@ -141,10 +152,46 @@ describe('public portfolio content', () => {
   });
 
   it('should keep canonical project metadata out of detailed case-study content', () => {
-    expect(uplandFileBoundCaseStudy).not.toHaveProperty('title');
-    expect(uplandFileBoundCaseStudy).not.toHaveProperty('subtitle');
-    expect(uplandFileBoundCaseStudy).not.toHaveProperty('summary');
-    expect(uplandFileBoundCaseStudy).not.toHaveProperty('tags');
+    for (const caseStudy of [uplandFileBoundCaseStudy, mojLawyerLicensingCaseStudy]) {
+      expect(caseStudy).not.toHaveProperty('title');
+      expect(caseStudy).not.toHaveProperty('subtitle');
+      expect(caseStudy).not.toHaveProperty('summary');
+      expect(caseStudy).not.toHaveProperty('tags');
+    }
+  });
+
+  it('should keep MOJ sections meaningful, uniquely identified, and structurally complete', () => {
+    const sections = mojLawyerLicensingCaseStudy.sections;
+
+    expect(sections.length).toBeGreaterThanOrEqual(5);
+    expect(sections.length).toBeLessThanOrEqual(7);
+    expect(new Set(sections.map((section) => section.id)).size).toBe(sections.length);
+
+    for (const section of sections) {
+      const bulletCount = 'bullets' in section ? section.bullets.length : 0;
+
+      expect(section.id).toMatch(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
+      expect(section.title.trim()).not.toBe('');
+      expect(section.paragraphs.length + bulletCount).toBeGreaterThan(0);
+    }
+  });
+
+  it('should protect MOJ chronology, ownership, metrics, and confidentiality boundaries', () => {
+    const moj = JSON.stringify(mojLawyerLicensingCaseStudy);
+    const propertyNames = collectPropertyNames(mojLawyerLicensingCaseStudy);
+
+    expect(propertyNames).not.toContain('startDate');
+    expect(propertyNames).not.toContain('endDate');
+    expect(propertyNames).not.toContain('period');
+    expect(propertyNames).not.toContain('duration');
+    expect(propertyNames).not.toContain('timeline');
+    expect(moj).not.toMatch(
+      /built the platform|architected (?:the )?entire|owned the (?:complete|entire) (?:platform|solution)|technical lead|engineering manager|sole (?:frontend|backend) owner/i,
+    );
+    expect(moj).not.toMatch(/\d+(?:\.\d+)?%|\d+\s*ms\b|\d+\s*(?:users|licenses|transactions)\b/i);
+    expect(moj).not.toMatch(
+      /dev\.azure\.com|https?:\/\/[^/\s]*\binternal\b|client[_-]?secret|connection\s*string|\bpr\s*#\d+\b|\b(?:src|source)\/[a-z0-9_./-]+\.(?:cs|ts|vue)\b/i,
+    );
   });
 
   it('should protect Upland role, testing, and metric accuracy', () => {
@@ -183,5 +230,17 @@ describe('public portfolio content', () => {
     }
 
     return project;
+  }
+
+  function collectPropertyNames(value: unknown): readonly string[] {
+    if (Array.isArray(value)) {
+      return value.flatMap((item) => collectPropertyNames(item));
+    }
+
+    if (value === null || typeof value !== 'object') {
+      return [];
+    }
+
+    return Object.entries(value).flatMap(([key, child]) => [key, ...collectPropertyNames(child)]);
   }
 });

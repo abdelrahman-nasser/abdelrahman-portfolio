@@ -14,6 +14,7 @@ export { expertiseGroups } from './expertise.content';
 export { portfolioProfile } from './profile.content';
 export {
   findProjectCaseStudy,
+  mojLawyerLicensingCaseStudy,
   projectCaseStudies,
   uplandFileBoundCaseStudy,
 } from './project-case-studies';
