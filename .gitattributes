@@ -1,0 +1,6 @@
+# Normalize text files in the repository and store them as LF.
+* text=auto eol=lf
+
+# Windows command scripts may retain CRLF.
+*.bat text eol=crlf
+*.cmd text eol=crlf
