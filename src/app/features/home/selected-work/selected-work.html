@@ -1,0 +1,21 @@
+<section class="selected-work" aria-labelledby="selected-work-title">
+  <app-page-container>
+    <div class="selected-work__heading">
+      <p class="selected-work__eyebrow">Selected projects</p>
+      <h2 id="selected-work-title">Selected Work</h2>
+      <p class="selected-work__intro">
+        Selected enterprise SaaS and government platforms where I contributed across architecture,
+        APIs, frontend systems, integrations, and production engineering.
+      </p>
+    </div>
+
+    <div class="selected-work__grid">
+      @for (project of projects; track project.id) {
+        <app-project-card
+          [class.selected-work__project--featured]="project.featured"
+          [project]="project"
+        />
+      }
+    </div>
+  </app-page-container>
+</section>
