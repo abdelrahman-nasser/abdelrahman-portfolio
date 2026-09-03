@@ -1,7 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 
-import { portfolioExperience, portfolioProfile, professionalSnapshot } from '../../content';
+import {
+  portfolioExperience,
+  portfolioProfile,
+  professionalSnapshot,
+  expertiseGroups,
+} from '../../content';
 import { HomePage } from './home-page';
 
 describe('HomePage', () => {
@@ -120,5 +125,36 @@ describe('HomePage', () => {
 
     expect(headingId).toBe('hero-title');
     expect(compiled.querySelector(`#${headingId}`)).not.toBeNull();
+  });
+
+  it('composes Engineering Expertise directly after Experience', () => {
+    const expertiseEl = compiled.querySelector('app-engineering-expertise');
+
+    expect(expertiseEl).not.toBeNull();
+    expect(expertiseEl?.previousElementSibling?.matches('app-experience-preview')).toBe(true);
+    expect(expertiseEl?.querySelector('section.engineering-expertise')).not.toBeNull();
+  });
+
+  it('renders the Engineering Expertise heading as an h2', () => {
+    const section = compiled.querySelector('section.engineering-expertise');
+    const heading = section?.querySelector('h2');
+
+    expect(section?.getAttribute('aria-labelledby')).toBe('engineering-expertise-title');
+    expect(heading?.id).toBe('engineering-expertise-title');
+    expect(heading?.textContent?.trim()).toBe('Engineering Expertise');
+  });
+
+  it('renders all canonical expertise groups in the homepage', () => {
+    const groupElements = Array.from(compiled.querySelectorAll('.engineering-expertise__group'));
+
+    expect(groupElements).toHaveLength(expertiseGroups.length);
+
+    for (const [index, group] of expertiseGroups.entries()) {
+      expect(groupElements[index]?.querySelector('h3')?.textContent?.trim()).toBe(group.title);
+    }
+  });
+
+  it('retains exactly one h1 after adding Engineering Expertise', () => {
+    expect(compiled.querySelectorAll('h1')).toHaveLength(1);
   });
 });

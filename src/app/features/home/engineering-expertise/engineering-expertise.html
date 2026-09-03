@@ -1,0 +1,25 @@
+﻿<section class="engineering-expertise" aria-labelledby="engineering-expertise-title">
+  <app-page-container>
+    <div class="engineering-expertise__heading">
+      <p class="engineering-expertise__eyebrow">Technical depth</p>
+      <h2 id="engineering-expertise-title">Engineering Expertise</h2>
+      <p class="engineering-expertise__intro">
+        A senior full-stack toolkit spanning application architecture, backend platforms, modern
+        frontend systems, data, delivery, and engineering leadership.
+      </p>
+    </div>
+
+    <ul class="engineering-expertise__grid" role="list">
+      @for (group of groups; track group.id) {
+        <li class="engineering-expertise__group">
+          <h3 class="engineering-expertise__group-title">{{ group.title }}</h3>
+          <ul class="engineering-expertise__items" role="list">
+            @for (item of group.items; track item) {
+              <li class="engineering-expertise__item">{{ item }}</li>
+            }
+          </ul>
+        </li>
+      }
+    </ul>
+  </app-page-container>
+</section>
