@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 
-import { portfolioProfile } from '../../content';
+import { portfolioProfile, professionalSnapshot } from '../../content';
 import { HomePage } from './home-page';
 
 describe('HomePage', () => {
@@ -39,6 +39,43 @@ describe('HomePage', () => {
 
     expect(headings).toHaveLength(1);
     expect(headings[0]?.textContent?.trim()).toBe(portfolioProfile.name);
+  });
+
+  it('renders the Professional Snapshot heading as an h2', () => {
+    const section = compiled.querySelector('section.professional-snapshot');
+    const heading = section?.querySelector('h2');
+
+    expect(section?.getAttribute('aria-labelledby')).toBe('professional-snapshot-title');
+    expect(heading?.id).toBe('professional-snapshot-title');
+    expect(heading?.textContent?.trim()).toBe('Professional Snapshot');
+  });
+
+  it('renders every item from the professional snapshot content', () => {
+    const items = Array.from(
+      compiled.querySelectorAll<HTMLElement>('.professional-snapshot__item'),
+    );
+
+    expect(items).toHaveLength(professionalSnapshot.length);
+
+    for (const [index, snapshotItem] of professionalSnapshot.entries()) {
+      const item = items[index];
+
+      expect(item?.querySelector('.professional-snapshot__value')?.textContent?.trim()).toBe(
+        snapshotItem.value,
+      );
+      expect(item?.querySelector('h3')?.textContent?.trim()).toBe(snapshotItem.label);
+      expect(item?.querySelector('.professional-snapshot__description')?.textContent?.trim()).toBe(
+        snapshotItem.description,
+      );
+    }
+  });
+
+  it('keeps professional snapshot items informational and out of the tab order', () => {
+    const interactiveElements = compiled.querySelectorAll(
+      '.professional-snapshot__item a, .professional-snapshot__item button, .professional-snapshot__item input, .professional-snapshot__item select, .professional-snapshot__item textarea, .professional-snapshot__item [tabindex]',
+    );
+
+    expect(interactiveElements).toHaveLength(0);
   });
 
   it('provides internal routes for the hero actions', () => {

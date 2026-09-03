@@ -1,0 +1,18 @@
+<section class="professional-snapshot" aria-labelledby="professional-snapshot-title">
+  <app-page-container>
+    <div class="professional-snapshot__heading">
+      <p class="professional-snapshot__eyebrow">Career at a glance</p>
+      <h2 id="professional-snapshot-title">Professional Snapshot</h2>
+    </div>
+
+    <ul class="professional-snapshot__list" role="list">
+      @for (item of items; track item.label) {
+        <li class="professional-snapshot__item">
+          <p class="professional-snapshot__value">{{ item.value }}</p>
+          <h3>{{ item.label }}</h3>
+          <p class="professional-snapshot__description">{{ item.description }}</p>
+        </li>
+      }
+    </ul>
+  </app-page-container>
+</section>
