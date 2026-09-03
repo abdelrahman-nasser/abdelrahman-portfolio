@@ -6,6 +6,8 @@ import { routes } from '../../../app.routes';
 import {
   mojLawyerLicensingCaseStudy,
   portfolioProjects,
+  projectCaseStudies,
+  scegaEventLicensingCaseStudy,
   uplandFileBoundCaseStudy,
 } from '../../../content';
 import { ProjectDetailPage } from './project-detail-page';
@@ -103,16 +105,48 @@ describe('ProjectDetailPage', () => {
     expect(compiled?.textContent).not.toMatch(/Angular|Module Federation|microservices/i);
   });
 
-  it('keeps SCEGA metadata-only until its dedicated case-study PR', async () => {
+  it('renders SCEGA long-form content through the shared shell with semantic headings and lists', async () => {
     const harness = await RouterTestingHarness.create();
 
     await harness.navigateByUrl('/projects/scega-event-licensing', ProjectDetailPage);
 
     const compiled = harness.routeNativeElement;
+    const sectionHeadings = Array.from(
+      compiled?.querySelectorAll('.case-study-section > h2') ?? [],
+    );
 
+    expect(compiled?.querySelectorAll('article.project-case-study')).toHaveLength(1);
     expect(compiled?.querySelectorAll('h1')).toHaveLength(1);
-    expect(compiled?.querySelector('.case-study-content')).toBeNull();
-    expect(compiled?.querySelectorAll('h2')).toHaveLength(0);
+    expect(sectionHeadings.map((heading) => heading.textContent?.trim())).toEqual(
+      scegaEventLicensingCaseStudy.sections.map((section) => section.title),
+    );
+    expect(compiled?.querySelectorAll('.case-study-section h3').length).toBeGreaterThan(0);
+    expect(compiled?.querySelectorAll('.case-study-section p').length).toBeGreaterThan(0);
+    expect(compiled?.querySelectorAll('.case-study-section ul').length).toBeGreaterThan(0);
+    expect(compiled?.textContent).toContain('Angular 19');
+    expect(compiled?.textContent).toContain('.NET 9');
+    expect(compiled?.textContent).toContain('ControlValueAccessor');
+    expect(compiled?.textContent).not.toMatch(
+      /micro[- ]?frontend|module federation|microservices/i,
+    );
+  });
+
+  it('renders detailed content for every project through one shared case-study shell', async () => {
+    const harness = await RouterTestingHarness.create();
+
+    for (const project of portfolioProjects) {
+      await harness.navigateByUrl(project.route, ProjectDetailPage);
+
+      const compiled = harness.routeNativeElement;
+      const caseStudy = projectCaseStudies.find((candidate) => candidate.projectId === project.id);
+
+      expect(caseStudy).toBeDefined();
+      expect(compiled?.querySelectorAll('app-project-case-study-shell')).toHaveLength(1);
+      expect(compiled?.querySelectorAll('article.project-case-study')).toHaveLength(1);
+      expect(compiled?.querySelectorAll('.case-study-section')).toHaveLength(
+        caseStudy?.sections.length ?? 0,
+      );
+    }
   });
 });
 

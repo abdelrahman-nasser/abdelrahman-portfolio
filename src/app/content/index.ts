@@ -16,6 +16,7 @@ export {
   findProjectCaseStudy,
   mojLawyerLicensingCaseStudy,
   projectCaseStudies,
+  scegaEventLicensingCaseStudy,
   uplandFileBoundCaseStudy,
 } from './project-case-studies';
 export { portfolioProjects } from './projects.content';
