@@ -1,5 +1,43 @@
-<section class="section">
+<section class="hero" aria-labelledby="hero-title">
   <app-page-container>
-    <h1>Abdelrahman Hegab</h1>
+    <div class="hero__layout">
+      <div class="hero__content">
+        <p class="hero__eyebrow">{{ profile.role }}</p>
+        <h1 id="hero-title">{{ profile.name }}</h1>
+        <p class="hero__positioning">{{ positioning }}</p>
+        <p class="hero__support">{{ profile.supportLine }}</p>
+
+        <div class="hero__actions">
+          <a class="hero__action hero__action--primary" routerLink="/projects">View My Work</a>
+          <a class="hero__action hero__action--secondary" routerLink="/cv">Download CV</a>
+        </div>
+      </div>
+
+      <div class="hero-visual" aria-hidden="true">
+        <div class="hero-visual__header">
+          <span>System view</span>
+          <span>04 layers</span>
+        </div>
+
+        <div class="hero-visual__flow">
+          <div class="hero-visual__node">
+            <span>01</span>
+            <strong>Web</strong>
+          </div>
+          <div class="hero-visual__node hero-visual__node--accent">
+            <span>02</span>
+            <strong>API</strong>
+          </div>
+          <div class="hero-visual__node">
+            <span>03</span>
+            <strong>Services</strong>
+          </div>
+          <div class="hero-visual__node">
+            <span>04</span>
+            <strong>Data</strong>
+          </div>
+        </div>
+      </div>
+    </div>
   </app-page-container>
 </section>
