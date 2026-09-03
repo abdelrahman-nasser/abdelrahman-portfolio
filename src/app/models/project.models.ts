@@ -12,3 +12,22 @@ export interface PortfolioProject {
   readonly route: string;
   readonly kind: ProjectKind;
 }
+
+export interface ProjectCaseStudySubsection {
+  readonly title: string;
+  readonly paragraphs?: readonly string[];
+  readonly bullets?: readonly string[];
+}
+
+export interface ProjectCaseStudySection {
+  readonly id: string;
+  readonly title: string;
+  readonly paragraphs: readonly string[];
+  readonly bullets?: readonly string[];
+  readonly subsections?: readonly ProjectCaseStudySubsection[];
+}
+
+export interface ProjectCaseStudy {
+  readonly projectId: PortfolioProject['id'];
+  readonly sections: readonly ProjectCaseStudySection[];
+}

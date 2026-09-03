@@ -1,1 +1,41 @@
-<app-project-case-study-shell [project]="project" />
+<app-project-case-study-shell [project]="project">
+  @if (caseStudy; as content) {
+    <div class="case-study-content">
+      @for (section of content.sections; track section.id) {
+        <section class="case-study-section" [attr.aria-labelledby]="section.id + '-heading'">
+          <h2 [id]="section.id + '-heading'">{{ section.title }}</h2>
+
+          @for (paragraph of section.paragraphs; track $index) {
+            <p>{{ paragraph }}</p>
+          }
+
+          @if (section.bullets) {
+            <ul>
+              @for (bullet of section.bullets; track $index) {
+                <li>{{ bullet }}</li>
+              }
+            </ul>
+          }
+
+          @for (subsection of section.subsections ?? []; track subsection.title) {
+            <div class="case-study-subsection">
+              <h3>{{ subsection.title }}</h3>
+
+              @for (paragraph of subsection.paragraphs ?? []; track $index) {
+                <p>{{ paragraph }}</p>
+              }
+
+              @if (subsection.bullets) {
+                <ul>
+                  @for (bullet of subsection.bullets; track $index) {
+                    <li>{{ bullet }}</li>
+                  }
+                </ul>
+              }
+            </div>
+          }
+        </section>
+      }
+    </div>
+  }
+</app-project-case-study-shell>

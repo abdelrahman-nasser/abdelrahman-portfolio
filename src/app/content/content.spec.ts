@@ -1,8 +1,11 @@
 import {
+  findProjectCaseStudy,
   portfolioProfile,
   portfolioProjects,
   professionalSnapshot,
+  projectCaseStudies,
   publicPortfolioContent,
+  uplandFileBoundCaseStudy,
 } from './index';
 
 describe('public portfolio content', () => {
@@ -103,9 +106,62 @@ describe('public portfolio content', () => {
   });
 
   it('should protect Upland from unsupported infrastructure claims', () => {
-    const upland = findProject('upland-filebound');
+    const upland = JSON.stringify({
+      project: findProject('upland-filebound'),
+      caseStudy: uplandFileBoundCaseStudy,
+    });
 
-    expect(JSON.stringify(upland)).not.toMatch(/redis|rabbitmq|hangfire|quartz|docker/i);
+    expect(upland).not.toMatch(
+      /redis|rabbitmq|hangfire|quartz|docker|kubernetes|kafka|mongodb|microservices/i,
+    );
+  });
+
+  it('should publish detailed case-study content only for canonical Upland', () => {
+    expect(projectCaseStudies).toHaveLength(1);
+    expect(uplandFileBoundCaseStudy.projectId).toBe('upland-filebound');
+    expect(findProject('upland-filebound').id).toBe(uplandFileBoundCaseStudy.projectId);
+    expect(findProjectCaseStudy('upland-filebound')).toBe(uplandFileBoundCaseStudy);
+    expect(findProjectCaseStudy('moj-lawyer-licensing')).toBeUndefined();
+    expect(findProjectCaseStudy('scega-event-licensing')).toBeUndefined();
+  });
+
+  it('should keep Upland sections meaningful, uniquely identified, and structurally complete', () => {
+    const sections = uplandFileBoundCaseStudy.sections;
+
+    expect(sections.length).toBeGreaterThanOrEqual(5);
+    expect(new Set(sections.map((section) => section.id)).size).toBe(sections.length);
+
+    for (const section of sections) {
+      const bulletCount = 'bullets' in section ? section.bullets.length : 0;
+
+      expect(section.id).toMatch(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
+      expect(section.title.trim()).not.toBe('');
+      expect(section.paragraphs.length + bulletCount).toBeGreaterThan(0);
+    }
+  });
+
+  it('should keep canonical project metadata out of detailed case-study content', () => {
+    expect(uplandFileBoundCaseStudy).not.toHaveProperty('title');
+    expect(uplandFileBoundCaseStudy).not.toHaveProperty('subtitle');
+    expect(uplandFileBoundCaseStudy).not.toHaveProperty('summary');
+    expect(uplandFileBoundCaseStudy).not.toHaveProperty('tags');
+  });
+
+  it('should protect Upland role, testing, and metric accuracy', () => {
+    const upland = JSON.stringify(uplandFileBoundCaseStudy);
+
+    expect(upland).toContain('nearly five years');
+    expect(upland).toContain(
+      'first FlairsTech engineer assigned specifically to the FileBound account',
+    );
+    expect(upland).toContain('Angular 16 MobileView');
+    expect(upland).toContain('Reaper');
+    expect(upland).not.toMatch(
+      /sole author|created Reaper|invented Reaper|built FileBound|owned the entire platform|managed \d+|led a \d+-person team/i,
+    );
+    expect(upland).not.toMatch(
+      /\d+(?:\.\d+)?%|\d+\s*ms\b|\d+\s*(?:users|customers|transactions)\b/i,
+    );
   });
 
   it('should not expose unresolved project dates for MOJ or SCEGA', () => {
