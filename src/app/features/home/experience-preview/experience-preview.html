@@ -1,0 +1,63 @@
+<section class="experience-preview" aria-labelledby="experience-preview-title">
+  <app-page-container>
+    <div class="experience-preview__layout">
+      <div class="experience-preview__heading">
+        <p class="experience-preview__eyebrow">Career progression</p>
+        <h2 id="experience-preview-title">Experience</h2>
+        <p class="experience-preview__intro">
+          A career spanning enterprise SaaS, full-stack product engineering, and Saudi government
+          digital platforms.
+        </p>
+      </div>
+
+      <div class="experience-preview__content">
+        <ol class="experience-preview__list" role="list">
+          @for (experience of experiences; track experience.id) {
+            <li class="experience-preview__item">
+              <article>
+                <header class="experience-preview__item-header">
+                  <div>
+                    <h3>{{ experience.role }}</h3>
+                    <p class="experience-preview__company">{{ experience.company }}</p>
+                  </div>
+
+                  @if (experience.startDate || experience.endDate) {
+                    <p class="experience-preview__date">
+                      <span class="visually-hidden">Employment period: </span>
+                      @if (experience.startDate) {
+                        <time [attr.datetime]="experience.startDate">
+                          {{ formatDate(experience.startDate) }}
+                        </time>
+                      }
+                      @if (experience.startDate && experience.endDate) {
+                        <span aria-hidden="true"> – </span>
+                        <span class="visually-hidden"> to </span>
+                      }
+                      @if (experience.endDate) {
+                        <time [attr.datetime]="experience.endDate">
+                          {{ formatDate(experience.endDate) }}
+                        </time>
+                      }
+                    </p>
+                  }
+                </header>
+
+                <p class="experience-preview__summary">{{ experience.summary }}</p>
+
+                @if (experience.highlights.length > 0) {
+                  <ul class="experience-preview__highlights">
+                    @for (highlight of experience.highlights.slice(0, 3); track highlight) {
+                      <li>{{ highlight }}</li>
+                    }
+                  </ul>
+                }
+              </article>
+            </li>
+          }
+        </ol>
+
+        <a class="experience-preview__cta" routerLink="/experience">View Full Experience</a>
+      </div>
+    </div>
+  </app-page-container>
+</section>

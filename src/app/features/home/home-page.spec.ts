@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 
-import { portfolioProfile, professionalSnapshot } from '../../content';
+import { portfolioExperience, portfolioProfile, professionalSnapshot } from '../../content';
 import { HomePage } from './home-page';
 
 describe('HomePage', () => {
@@ -76,6 +76,23 @@ describe('HomePage', () => {
     expect(selectedWork).not.toBeNull();
     expect(selectedWork?.previousElementSibling?.matches('app-professional-snapshot')).toBe(true);
     expect(selectedWork?.querySelector('section.selected-work')).not.toBeNull();
+  });
+
+  it('composes Experience directly after Selected Work', () => {
+    const experiencePreview = compiled.querySelector('app-experience-preview');
+
+    expect(experiencePreview).not.toBeNull();
+    expect(experiencePreview?.previousElementSibling?.matches('app-selected-work')).toBe(true);
+    expect(experiencePreview?.querySelector('section.experience-preview')).not.toBeNull();
+  });
+
+  it('renders the canonical experience preview without adding another h1', () => {
+    const experienceItems = compiled.querySelectorAll('.experience-preview__item');
+    const experienceHeading = compiled.querySelector('#experience-preview-title');
+
+    expect(experienceItems).toHaveLength(Math.min(3, portfolioExperience.length));
+    expect(experienceHeading?.tagName).toBe('H2');
+    expect(compiled.querySelectorAll('h1')).toHaveLength(1);
   });
 
   it('keeps professional snapshot items informational and out of the tab order', () => {
