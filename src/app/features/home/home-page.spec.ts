@@ -8,6 +8,7 @@ import {
   portfolioProfile,
   professionalSnapshot,
   expertiseGroups,
+  portfolioCredentials,
 } from '../../content';
 import { HomePage } from './home-page';
 
@@ -207,7 +208,62 @@ describe('HomePage', () => {
     expect(steps).toHaveLength(aiAugmentedEngineering.workflow.length);
   });
 
-  it('retains exactly one h1 after adding AI-Augmented Engineering', () => {
+  it('composes Credentials directly after AI-Augmented Engineering', () => {
+    const credentialsEl = compiled.querySelector('app-credentials');
+
+    expect(credentialsEl).not.toBeNull();
+    expect(credentialsEl?.previousElementSibling?.matches('app-ai-engineering')).toBe(true);
+    expect(credentialsEl?.querySelector('section.credentials')).not.toBeNull();
+  });
+
+  it('renders the Credentials section heading as an h2', () => {
+    const section = compiled.querySelector('section.credentials');
+    const heading = section?.querySelector('h2');
+
+    expect(section?.getAttribute('aria-labelledby')).toBe('credentials-title');
+    expect(heading?.id).toBe('credentials-title');
+    expect(heading?.textContent?.trim()).toBe('Credentials');
+  });
+
+  it('renders all canonical credentials in the homepage', () => {
+    const items = Array.from(compiled.querySelectorAll('.credentials__item'));
+
+    expect(items).toHaveLength(portfolioCredentials.length);
+
+    for (const [index, cred] of portfolioCredentials.entries()) {
+      expect(items[index]?.querySelector('h3')?.textContent?.trim()).toBe(cred.title);
+    }
+  });
+
+  it('composes Contact CTA directly after Credentials', () => {
+    const contactCtaEl = compiled.querySelector('app-contact-cta');
+
+    expect(contactCtaEl).not.toBeNull();
+    expect(contactCtaEl?.previousElementSibling?.matches('app-credentials')).toBe(true);
+    expect(contactCtaEl?.querySelector('section.contact-cta')).not.toBeNull();
+  });
+
+  it('renders the Contact CTA section heading as an h2', () => {
+    const section = compiled.querySelector('section.contact-cta');
+    const heading = section?.querySelector('h2');
+
+    expect(section?.getAttribute('aria-labelledby')).toBe('contact-cta-title');
+    expect(heading?.id).toBe('contact-cta-title');
+    expect(heading?.textContent?.trim()).toBe("Let's Work Together");
+  });
+
+  it('renders the contact and CV CTA links with correct routes', () => {
+    const contactLink = compiled.querySelector<HTMLAnchorElement>('.contact-cta__action--primary');
+    const cvLink = compiled.querySelector<HTMLAnchorElement>('.contact-cta__action--secondary');
+
+    expect(contactLink?.textContent?.trim()).toBe('Contact Me');
+    expect(contactLink?.getAttribute('href')).toBe('/contact');
+    expect(cvLink?.textContent?.trim()).toBe('View CV');
+    expect(cvLink?.getAttribute('href')).toBe('/cv');
+  });
+
+  it('retains exactly one h1 across all composed homepage sections', () => {
     expect(compiled.querySelectorAll('h1')).toHaveLength(1);
+    expect(compiled.querySelector('h1')?.textContent?.trim()).toBe(portfolioProfile.name);
   });
 });
