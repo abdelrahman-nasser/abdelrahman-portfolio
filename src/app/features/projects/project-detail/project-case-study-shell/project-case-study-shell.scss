@@ -1,0 +1,95 @@
+:host {
+  display: block;
+  min-inline-size: 0;
+}
+
+.project-case-study {
+  min-inline-size: 0;
+  background: var(--color-bg-page);
+  overflow-wrap: anywhere;
+}
+
+.project-case-study__back-link {
+  display: inline-flex;
+  min-block-size: 2.75rem;
+  align-items: center;
+  gap: var(--space-2);
+  font-weight: var(--font-weight-semibold);
+}
+
+.project-case-study__header,
+.project-case-study__body {
+  max-inline-size: var(--container-reading);
+}
+
+.project-case-study__header {
+  margin-block-start: var(--space-10);
+}
+
+.project-case-study__context {
+  color: var(--color-primary);
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.08em;
+  line-height: var(--line-height-caption);
+  text-transform: uppercase;
+}
+
+.project-case-study h1 {
+  margin-block-start: var(--space-3);
+}
+
+.project-case-study__subtitle {
+  margin-block-start: var(--space-4);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-body-sm);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.04em;
+  line-height: var(--line-height-body-sm);
+  text-transform: uppercase;
+}
+
+.project-case-study__summary {
+  margin-block-start: var(--space-6);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-body-lg);
+  line-height: var(--line-height-body-lg);
+}
+
+.project-case-study__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  padding: 0;
+  margin: var(--space-8) 0 0;
+  list-style: none;
+}
+
+.project-case-study__tags li {
+  padding: var(--space-1) var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  background: var(--color-bg-surface-secondary);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-caption);
+}
+
+.project-case-study__body {
+  margin-block-start: var(--space-16);
+}
+
+.project-case-study__body:empty {
+  display: none;
+}
+
+@media (width < 30rem) {
+  .project-case-study__header {
+    margin-block-start: var(--space-8);
+  }
+
+  .project-case-study__tags {
+    margin-block-start: var(--space-6);
+  }
+}

@@ -1,5 +1,12 @@
 import { Routes } from '@angular/router';
 
+import type { ProjectDetailRouteData } from './features/projects/project-detail/project-detail-route';
+
+const loadProjectDetailPage = () =>
+  import('./features/projects/project-detail/project-detail-page').then(
+    (page) => page.ProjectDetailPage,
+  );
+
 export const routes: Routes = [
   {
     path: '',
@@ -14,6 +21,27 @@ export const routes: Routes = [
     path: 'projects',
     loadComponent: () =>
       import('./features/projects/projects-page').then((page) => page.ProjectsPage),
+  },
+  {
+    path: 'projects/upland-filebound',
+    loadComponent: loadProjectDetailPage,
+    data: {
+      projectId: 'upland-filebound',
+    } satisfies ProjectDetailRouteData,
+  },
+  {
+    path: 'projects/moj-lawyer-licensing',
+    loadComponent: loadProjectDetailPage,
+    data: {
+      projectId: 'moj-lawyer-licensing',
+    } satisfies ProjectDetailRouteData,
+  },
+  {
+    path: 'projects/scega-event-licensing',
+    loadComponent: loadProjectDetailPage,
+    data: {
+      projectId: 'scega-event-licensing',
+    } satisfies ProjectDetailRouteData,
   },
   {
     path: 'engineering',
