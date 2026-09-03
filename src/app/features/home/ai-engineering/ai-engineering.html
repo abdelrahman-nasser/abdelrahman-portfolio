@@ -1,0 +1,38 @@
+<section class="ai-engineering" aria-labelledby="ai-engineering-title">
+  <app-page-container>
+    <div class="ai-engineering__heading">
+      <p class="ai-engineering__eyebrow">Modern Engineering Workflow</p>
+      <h2 id="ai-engineering-title">AI-Augmented Engineering</h2>
+      <p class="ai-engineering__intro">{{ data.statement }}</p>
+    </div>
+
+    <div class="ai-engineering__body">
+      <div class="ai-engineering__col">
+        <h3 class="ai-engineering__col-label">Engineering Workflow</h3>
+        <ol class="ai-engineering__workflow" role="list">
+          @for (step of data.workflow; track step; let idx = $index) {
+            <li class="ai-engineering__step">
+              <span class="ai-engineering__step-num" aria-hidden="true">{{
+                (idx + 1).toString().padStart(2, '0')
+              }}</span>
+              <span class="ai-engineering__step-name">{{ step }}</span>
+            </li>
+          }
+        </ol>
+      </div>
+
+      <div class="ai-engineering__col">
+        <h3 class="ai-engineering__col-label">Human Ownership</h3>
+        <ul class="ai-engineering__ownership" role="list">
+          @for (area of data.humanResponsibilities; track area) {
+            <li class="ai-engineering__ownership-item">{{ area }}</li>
+          }
+        </ul>
+        <p class="ai-engineering__ownership-note">
+          Architecture decisions, validation, security, business logic, and final engineering
+          decisions remain entirely human-owned.
+        </p>
+      </div>
+    </div>
+  </app-page-container>
+</section>

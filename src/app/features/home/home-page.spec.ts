@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 
 import {
+  aiAugmentedEngineering,
   engineeringPrinciples,
   portfolioExperience,
   portfolioProfile,
@@ -180,6 +181,33 @@ describe('HomePage', () => {
   });
 
   it('retains exactly one h1 after adding Engineering Principles', () => {
+    expect(compiled.querySelectorAll('h1')).toHaveLength(1);
+  });
+
+  it('composes AI-Augmented Engineering directly after How I Engineer', () => {
+    const aiEl = compiled.querySelector('app-ai-engineering');
+
+    expect(aiEl).not.toBeNull();
+    expect(aiEl?.previousElementSibling?.matches('app-engineering-principles')).toBe(true);
+    expect(aiEl?.querySelector('section.ai-engineering')).not.toBeNull();
+  });
+
+  it('renders the AI-Augmented Engineering section heading as an h2', () => {
+    const section = compiled.querySelector('section.ai-engineering');
+    const heading = section?.querySelector('h2');
+
+    expect(section?.getAttribute('aria-labelledby')).toBe('ai-engineering-title');
+    expect(heading?.id).toBe('ai-engineering-title');
+    expect(heading?.textContent?.trim()).toBe('AI-Augmented Engineering');
+  });
+
+  it('renders all canonical AI workflow stages in the homepage', () => {
+    const steps = Array.from(compiled.querySelectorAll('.ai-engineering__step-name'));
+
+    expect(steps).toHaveLength(aiAugmentedEngineering.workflow.length);
+  });
+
+  it('retains exactly one h1 after adding AI-Augmented Engineering', () => {
     expect(compiled.querySelectorAll('h1')).toHaveLength(1);
   });
 });
