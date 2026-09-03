@@ -6,6 +6,7 @@ import {
   professionalSnapshot,
   projectCaseStudies,
   publicPortfolioContent,
+  scegaEventLicensingCaseStudy,
   uplandFileBoundCaseStudy,
 } from './index';
 
@@ -94,9 +95,37 @@ describe('public portfolio content', () => {
   });
 
   it('should protect SCEGA architecture accuracy', () => {
-    const scega = findProject('scega-event-licensing');
+    const scega = JSON.stringify({
+      project: findProject('scega-event-licensing'),
+      caseStudy: scegaEventLicensingCaseStudy,
+    });
 
-    expect(JSON.stringify(scega)).not.toMatch(/micro frontend|module federation|microservices/i);
+    expect(scega).toContain('one Angular application');
+    expect(scega).toContain('feature-based lazy routes');
+    expect(scega).not.toMatch(
+      /micro[- ]?frontend|\bmfe\b|module federation|webpack federation|frontend federation|single-spa|microservices/i,
+    );
+  });
+
+  it('should preserve the verified SCEGA technical context', () => {
+    const scega = JSON.stringify(scegaEventLicensingCaseStudy);
+
+    for (const technology of [
+      'Angular 19',
+      'TypeScript',
+      '.NET 9',
+      'ASP.NET Core',
+      'EF Core',
+      'CQRS',
+      'MediatR',
+      'SQL Server',
+      'PrimeNG',
+      'FluentValidation',
+      'RxJS',
+      'ControlValueAccessor',
+    ]) {
+      expect(scega).toContain(technology);
+    }
   });
 
   it('should protect MOJ frontend and backend architecture accuracy', () => {
@@ -125,15 +154,17 @@ describe('public portfolio content', () => {
     );
   });
 
-  it('should publish detailed case-study content only for canonical Upland and MOJ projects', () => {
-    expect(projectCaseStudies).toHaveLength(2);
+  it('should publish detailed case-study content for all three canonical projects', () => {
+    expect(projectCaseStudies).toHaveLength(3);
     expect(uplandFileBoundCaseStudy.projectId).toBe('upland-filebound');
     expect(mojLawyerLicensingCaseStudy.projectId).toBe('moj-lawyer-licensing');
+    expect(scegaEventLicensingCaseStudy.projectId).toBe('scega-event-licensing');
     expect(findProject('upland-filebound').id).toBe(uplandFileBoundCaseStudy.projectId);
     expect(findProject('moj-lawyer-licensing').id).toBe(mojLawyerLicensingCaseStudy.projectId);
+    expect(findProject('scega-event-licensing').id).toBe(scegaEventLicensingCaseStudy.projectId);
     expect(findProjectCaseStudy('upland-filebound')).toBe(uplandFileBoundCaseStudy);
     expect(findProjectCaseStudy('moj-lawyer-licensing')).toBe(mojLawyerLicensingCaseStudy);
-    expect(findProjectCaseStudy('scega-event-licensing')).toBeUndefined();
+    expect(findProjectCaseStudy('scega-event-licensing')).toBe(scegaEventLicensingCaseStudy);
   });
 
   it('should keep Upland sections meaningful, uniquely identified, and structurally complete', () => {
@@ -152,7 +183,11 @@ describe('public portfolio content', () => {
   });
 
   it('should keep canonical project metadata out of detailed case-study content', () => {
-    for (const caseStudy of [uplandFileBoundCaseStudy, mojLawyerLicensingCaseStudy]) {
+    for (const caseStudy of [
+      uplandFileBoundCaseStudy,
+      mojLawyerLicensingCaseStudy,
+      scegaEventLicensingCaseStudy,
+    ]) {
       expect(caseStudy).not.toHaveProperty('title');
       expect(caseStudy).not.toHaveProperty('subtitle');
       expect(caseStudy).not.toHaveProperty('summary');
@@ -174,6 +209,42 @@ describe('public portfolio content', () => {
       expect(section.title.trim()).not.toBe('');
       expect(section.paragraphs.length + bulletCount).toBeGreaterThan(0);
     }
+  });
+
+  it('should keep SCEGA sections meaningful, uniquely identified, and structurally complete', () => {
+    const sections = scegaEventLicensingCaseStudy.sections;
+
+    expect(sections.length).toBeGreaterThanOrEqual(6);
+    expect(sections.length).toBeLessThanOrEqual(8);
+    expect(new Set(sections.map((section) => section.id)).size).toBe(sections.length);
+
+    for (const section of sections) {
+      const bulletCount = 'bullets' in section ? section.bullets.length : 0;
+
+      expect(section.id).toMatch(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
+      expect(section.title.trim()).not.toBe('');
+      expect(section.paragraphs.length + bulletCount).toBeGreaterThan(0);
+    }
+  });
+
+  it('should protect SCEGA chronology, metrics, confidentiality, and contribution scope', () => {
+    const scega = JSON.stringify(scegaEventLicensingCaseStudy);
+    const propertyNames = collectPropertyNames(scegaEventLicensingCaseStudy);
+
+    expect(propertyNames).not.toContain('startDate');
+    expect(propertyNames).not.toContain('endDate');
+    expect(propertyNames).not.toContain('period');
+    expect(propertyNames).not.toContain('duration');
+    expect(propertyNames).not.toContain('timeline');
+    expect(scega).not.toMatch(
+      /built the (?:entire|complete) platform|architected (?:the )?entire|owned the (?:complete|entire) (?:platform|solution)|technical lead|engineering manager|team lead|sole (?:frontend|backend) owner|built the platform alone/i,
+    );
+    expect(scega).not.toMatch(
+      /\d+(?:\.\d+)?%|\d+\s*ms\b|\d+\s*(?:users|licenses|events|transactions)\b/i,
+    );
+    expect(scega).not.toMatch(
+      /dev\.azure\.com|https?:\/\/[^/\s]*\binternal\b|client[_-]?secret|connection\s*string|\bpr\s*#\d+\b|private endpoint|server name|database name/i,
+    );
   });
 
   it('should protect MOJ chronology, ownership, metrics, and confidentiality boundaries', () => {
