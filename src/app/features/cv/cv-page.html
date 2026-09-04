@@ -1,5 +1,162 @@
-<section class="section">
-  <app-page-container>
-    <h1>CV</h1>
-  </app-page-container>
-</section>
+<article class="cv-page" aria-labelledby="cv-title">
+  <header class="cv-page__header section">
+    <app-page-container>
+      <div class="cv-page__header-grid">
+        <div class="cv-page__identity">
+          <p class="cv-page__eyebrow">Professional record</p>
+          <h1 id="cv-title">Curriculum Vitae</h1>
+          <p class="cv-page__name">{{ profile.name }}</p>
+          <p class="cv-page__headline">{{ profile.headline }}</p>
+        </div>
+
+        <address class="cv-page__contact-summary">
+          <ul role="list">
+            <li>{{ profile.location }}</li>
+            <li>
+              <a [href]="emailHref">{{ profile.email }}</a>
+            </li>
+            @if (profile.phone && phoneHref) {
+              <li>
+                <a [href]="phoneHref">{{ profile.phone }}</a>
+              </li>
+            }
+          </ul>
+        </address>
+      </div>
+    </app-page-container>
+  </header>
+
+  <section class="cv-page__section section" aria-labelledby="cv-profile-title">
+    <app-page-container>
+      <div class="cv-page__section-grid">
+        <header class="cv-page__section-heading">
+          <p class="cv-page__eyebrow">Overview</p>
+          <h2 id="cv-profile-title">Professional Profile</h2>
+        </header>
+        <p class="cv-page__summary">{{ profile.summary }}</p>
+      </div>
+    </app-page-container>
+  </section>
+
+  <section
+    class="cv-page__section cv-page__section--alternate section"
+    aria-labelledby="cv-expertise-title"
+  >
+    <app-page-container>
+      <div class="cv-page__section-heading cv-page__section-heading--wide">
+        <p class="cv-page__eyebrow">Core capabilities</p>
+        <h2 id="cv-expertise-title">Expertise</h2>
+      </div>
+
+      <ul class="cv-page__expertise-grid" role="list">
+        @for (group of expertise; track group.id) {
+          <li class="cv-page__expertise-group">
+            <h3>{{ group.title }}</h3>
+            <ul role="list">
+              @for (item of group.items; track item) {
+                <li>{{ item }}</li>
+              }
+            </ul>
+          </li>
+        }
+      </ul>
+    </app-page-container>
+  </section>
+
+  <section class="cv-page__section section" aria-labelledby="cv-experience-title">
+    <app-page-container>
+      <div class="cv-page__section-heading cv-page__section-heading--wide">
+        <p class="cv-page__eyebrow">Career record</p>
+        <h2 id="cv-experience-title">Experience</h2>
+      </div>
+
+      <ol class="cv-page__experience-list" aria-label="Professional experience">
+        @for (experience of experiences; track experience.id) {
+          <li class="cv-page__experience-entry">
+            <article>
+              <header class="cv-page__experience-header">
+                <div>
+                  <h3>{{ experience.role }}</h3>
+                  <p class="cv-page__company">{{ experience.company }}</p>
+                </div>
+                <div class="cv-page__metadata">
+                  @if (experience.startDate || experience.endDate) {
+                    <p class="cv-page__dates">
+                      <span class="visually-hidden">Employment period: </span>
+                      @if (experience.startDate) {
+                        <time [attr.datetime]="experience.startDate">
+                          {{ formatDate(experience.startDate) }}
+                        </time>
+                      }
+                      @if (experience.startDate && experience.endDate) {
+                        <span aria-hidden="true"> – </span>
+                        <span class="visually-hidden"> to </span>
+                      }
+                      @if (experience.endDate) {
+                        <time [attr.datetime]="experience.endDate">
+                          {{ formatDate(experience.endDate) }}
+                        </time>
+                      }
+                    </p>
+                  }
+                  <p>{{ experience.location }}</p>
+                </div>
+              </header>
+
+              <p class="cv-page__experience-summary">{{ experience.summary }}</p>
+              <ul class="cv-page__highlights">
+                @for (highlight of experience.highlights; track highlight) {
+                  <li>{{ highlight }}</li>
+                }
+              </ul>
+            </article>
+          </li>
+        }
+      </ol>
+    </app-page-container>
+  </section>
+
+  <section
+    class="cv-page__section cv-page__section--alternate section"
+    aria-labelledby="cv-credentials-title"
+  >
+    <app-page-container>
+      <div class="cv-page__section-grid">
+        <header class="cv-page__section-heading">
+          <p class="cv-page__eyebrow">Microsoft credentials</p>
+          <h2 id="cv-credentials-title">Credentials</h2>
+        </header>
+
+        <ul class="cv-page__credential-list" role="list">
+          @for (credential of credentials; track credential.id) {
+            <li>
+              <h3>{{ credential.title }}</h3>
+              <p>{{ credential.issuer }}</p>
+            </li>
+          }
+        </ul>
+      </div>
+    </app-page-container>
+  </section>
+
+  <section class="cv-page__section section" aria-labelledby="cv-links-title">
+    <app-page-container>
+      <div class="cv-page__links-content">
+        <p class="cv-page__eyebrow">Continue the conversation</p>
+        <h2 id="cv-links-title">Contact & Portfolio</h2>
+        <p>
+          Explore selected engineering case studies or connect through the professional profiles
+          below.
+        </p>
+
+        <nav class="cv-page__actions" aria-label="CV next steps">
+          <a routerLink="/projects">View Selected Projects</a>
+          <a [href]="emailHref">Email Me</a>
+          <a [href]="profile.linkedin" target="_blank" rel="noopener noreferrer"> LinkedIn </a>
+          <a [href]="profile.github" target="_blank" rel="noopener noreferrer"> GitHub </a>
+          <a [href]="profile.website" target="_blank" rel="noopener noreferrer"> Portfolio </a>
+        </nav>
+      </div>
+    </app-page-container>
+  </section>
+</article>
