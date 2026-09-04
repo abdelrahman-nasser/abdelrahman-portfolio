@@ -1,3 +1,4 @@
+import { aboutPageContent } from './about.content';
 import { portfolioCredentials } from './credentials.content';
 import { aiAugmentedEngineering, engineeringPrinciples } from './engineering.content';
 import { portfolioExperience } from './experience.content';
@@ -7,6 +8,7 @@ import { projectCaseStudies } from './project-case-studies';
 import { portfolioProjects } from './projects.content';
 import { professionalSnapshot } from './snapshot.content';
 
+export { aboutPageContent } from './about.content';
 export { portfolioCredentials } from './credentials.content';
 export { aiAugmentedEngineering, engineeringPrinciples } from './engineering.content';
 export { portfolioExperience } from './experience.content';
@@ -23,6 +25,7 @@ export { portfolioProjects } from './projects.content';
 export { professionalSnapshot } from './snapshot.content';
 
 export const publicPortfolioContent = {
+  about: aboutPageContent,
   profile: portfolioProfile,
   professionalSnapshot,
   projects: portfolioProjects,
