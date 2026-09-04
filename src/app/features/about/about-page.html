@@ -1,5 +1,110 @@
-<section class="section">
-  <app-page-container>
-    <h1>About</h1>
-  </app-page-container>
+<section class="about-page" aria-labelledby="about-title">
+  <header class="about-page__header section">
+    <app-page-container>
+      <div class="about-page__header-content">
+        <p class="about-page__eyebrow">Professional profile</p>
+        <h1 id="about-title">About</h1>
+        <p class="about-page__intro">{{ profile.summary }}</p>
+      </div>
+    </app-page-container>
+  </header>
+
+  <section
+    class="about-page__section about-page__section--story section"
+    aria-labelledby="story-title"
+  >
+    <app-page-container>
+      <div class="about-page__editorial-grid">
+        <div class="about-page__section-heading">
+          <p class="about-page__eyebrow">Career progression</p>
+          <h2 id="story-title">Professional Story</h2>
+        </div>
+
+        <div class="about-page__prose">
+          @for (paragraph of content.story; track paragraph) {
+            <p>{{ paragraph }}</p>
+          }
+        </div>
+      </div>
+    </app-page-container>
+  </section>
+
+  <section class="about-page__section section" aria-labelledby="work-title">
+    <app-page-container>
+      <div class="about-page__section-heading about-page__section-heading--wide">
+        <p class="about-page__eyebrow">Systems and problems</p>
+        <h2 id="work-title">What I Work On</h2>
+        <p class="about-page__section-intro">{{ content.workIntro }}</p>
+      </div>
+
+      <ul class="about-page__work-list">
+        @for (area of content.workAreas; track area.id; let index = $index) {
+          <li class="about-page__work-item">
+            <span class="about-page__item-number" aria-hidden="true">
+              {{ (index + 1).toString().padStart(2, '0') }}
+            </span>
+            <div>
+              <h3>{{ area.title }}</h3>
+              <p>{{ area.description }}</p>
+            </div>
+          </li>
+        }
+      </ul>
+    </app-page-container>
+  </section>
+
+  <section
+    class="about-page__section about-page__section--contribution section"
+    aria-labelledby="contribution-title"
+  >
+    <app-page-container>
+      <div class="about-page__section-heading about-page__section-heading--wide">
+        <p class="about-page__eyebrow">Senior engineering value</p>
+        <h2 id="contribution-title">How I Contribute</h2>
+        <p class="about-page__section-intro">{{ content.contributionIntro }}</p>
+      </div>
+
+      <ol class="about-page__contribution-list">
+        @for (area of content.contributionAreas; track area.id; let index = $index) {
+          <li class="about-page__contribution-item">
+            <span class="about-page__item-number" aria-hidden="true">
+              {{ (index + 1).toString().padStart(2, '0') }}
+            </span>
+            <div>
+              <h3>{{ area.title }}</h3>
+              <p>{{ area.description }}</p>
+            </div>
+          </li>
+        }
+      </ol>
+
+      <div class="about-page__ai-note">
+        <p class="about-page__ai-label">A modern, human-owned workflow</p>
+        <p>{{ ai.statement }}</p>
+      </div>
+    </app-page-container>
+  </section>
+
+  <section
+    class="about-page__section about-page__section--closing section"
+    aria-labelledby="closing-title"
+  >
+    <app-page-container>
+      <div class="about-page__closing-content">
+        <p class="about-page__eyebrow">Continue exploring</p>
+        <h2 id="closing-title">{{ content.closing.title }}</h2>
+        <p class="about-page__section-intro">{{ content.closing.description }}</p>
+
+        <nav class="about-page__actions" aria-label="About page next steps">
+          <a class="about-page__action about-page__action--primary" routerLink="/projects">
+            View Projects
+          </a>
+          <a class="about-page__action about-page__action--secondary" routerLink="/experience">
+            View Experience
+          </a>
+          <a class="about-page__contact-link" routerLink="/contact">Contact Me</a>
+        </nav>
+      </div>
+    </app-page-container>
+  </section>
 </section>
