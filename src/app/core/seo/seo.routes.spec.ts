@@ -1,0 +1,107 @@
+import type { Route } from '@angular/router';
+
+import { routes } from '../../app.routes';
+import { SEO_ROUTE_DATA_KEY, SeoMetadata } from './seo.models';
+
+const expectedTitles = new Map<string, string>([
+  ['', 'Abdelrahman Hegab | Senior Software Engineer'],
+  ['experience', 'Experience | Abdelrahman Hegab'],
+  ['projects', 'Engineering Projects | Abdelrahman Hegab'],
+  ['projects/upland-filebound', 'Upland FileBound Engineering Case Study | Abdelrahman Hegab'],
+  [
+    'projects/moj-lawyer-licensing',
+    'Saudi Ministry of Justice Lawyer Licensing Case Study | Abdelrahman Hegab',
+  ],
+  [
+    'projects/scega-event-licensing',
+    'SCEGA Event Licensing Platform Case Study | Abdelrahman Hegab',
+  ],
+  ['engineering', 'Engineering Approach | Abdelrahman Hegab'],
+  ['about', 'About | Abdelrahman Hegab'],
+  ['contact', 'Contact | Abdelrahman Hegab'],
+  ['cv', 'CV | Abdelrahman Hegab'],
+]);
+
+describe('route SEO metadata', () => {
+  it('should cover exactly the ten public routes', () => {
+    expect(routes).toHaveLength(10);
+    expect(routes.map((route) => route.path)).toEqual([...expectedTitles.keys()]);
+
+    for (const route of routes) {
+      expect(getSeoMetadata(route)).toBeDefined();
+    }
+  });
+
+  it('should use the approved, route-appropriate titles', () => {
+    for (const route of routes) {
+      const expectedTitle = expectedTitles.get(route.path ?? '');
+
+      expect(getSeoMetadata(route).title).toBe(expectedTitle);
+    }
+  });
+
+  it('should provide a distinct, non-empty description for every route', () => {
+    const descriptions = routes.map((route) => getSeoMetadata(route).description.trim());
+
+    expect(descriptions.every((description) => description.length > 0)).toBe(true);
+    expect(new Set(descriptions)).toHaveLength(routes.length);
+  });
+
+  it('should mark only the homepage for Person structured data', () => {
+    expect(getSeoMetadata(routes[0]).structuredData).toBe('person');
+
+    for (const route of routes.slice(1)) {
+      expect(getSeoMetadata(route).structuredData).toBeUndefined();
+    }
+  });
+
+  it('should preserve project-specific SEO accuracy guards', () => {
+    const upland = serializeRouteSeo('projects/upland-filebound');
+    const moj = serializeRouteSeo('projects/moj-lawyer-licensing');
+    const scega = serializeRouteSeo('projects/scega-event-licensing');
+
+    expect(upland).not.toMatch(/redis|rabbitmq|hangfire|quartz|docker|kubernetes|microservices/i);
+
+    expect(moj).toContain('.NET 8');
+    expect(moj).toContain('Vue 2');
+    expect(moj).toContain('path-based Micro Frontend');
+    expect(moj).not.toMatch(/angular|module federation|microservices/i);
+
+    expect(scega).toContain('Angular 19');
+    expect(scega).toContain('.NET 9');
+    expect(scega).toContain('CQRS/MediatR');
+    expect(scega).not.toMatch(/micro[- ]?frontend|module federation|microservices/i);
+  });
+
+  it('should not add unresolved chronology to SEO metadata', () => {
+    const allMetadata = JSON.stringify(routes.map((route) => getSeoMetadata(route)));
+
+    expect(allMetadata).not.toMatch(/\b(?:19|20)\d{2}\b/);
+  });
+});
+
+function getSeoMetadata(route: Route | undefined): SeoMetadata {
+  const metadata = route?.data?.[SEO_ROUTE_DATA_KEY];
+
+  if (!isSeoMetadata(metadata)) {
+    throw new Error(`Route ${route?.path ?? '<missing>'} does not have valid SEO metadata.`);
+  }
+
+  return metadata;
+}
+
+function serializeRouteSeo(path: string): string {
+  const route = routes.find((candidate) => candidate.path === path);
+
+  return JSON.stringify(getSeoMetadata(route));
+}
+
+function isSeoMetadata(value: unknown): value is SeoMetadata {
+  if (value === null || typeof value !== 'object') {
+    return false;
+  }
+
+  const metadata = value as Partial<SeoMetadata>;
+
+  return typeof metadata.title === 'string' && typeof metadata.description === 'string';
+}
