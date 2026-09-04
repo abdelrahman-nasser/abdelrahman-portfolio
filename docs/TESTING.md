@@ -1885,19 +1885,27 @@ Update tests as requirements change.
 
 ---
 
-# 100. Approved Commands — Conceptual
+# 100. Approved Commands
 
-After Angular initialization, package scripts should expose simple commands such as:
+The repository exposes these testing and quality commands:
 
 ```text
 npm test
-npm run test:coverage
+npm run test:ci
 npm run test:e2e
+npm run test:e2e:headed
 npm run lint
 npm run build
 ```
 
-Exact scripts should match Angular 22 CLI and repository tooling.
+Install the Chromium browser once after installing dependencies:
+
+```text
+npx playwright install chromium
+```
+
+Playwright starts the Angular development server automatically at
+`http://127.0.0.1:4200`; a manually started server is not required.
 
 Do not create redundant aliases without need.
 
