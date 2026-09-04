@@ -2,6 +2,7 @@ import type { Route } from '@angular/router';
 
 import { routes } from '../../app.routes';
 import { portfolioProfile } from '../../content/profile.content';
+import { portfolioProjects } from '../../content/projects.content';
 import { SEO_ROUTE_DATA_KEY, SeoMetadata } from './seo.models';
 import { buildSocialRouteUrl } from './seo.service';
 
@@ -28,10 +29,24 @@ describe('route SEO metadata', () => {
   it('should cover exactly the ten public routes', () => {
     expect(routes).toHaveLength(10);
     expect(routes.map((route) => route.path)).toEqual([...expectedTitles.keys()]);
+    expect(new Set(routes.map((route) => route.path))).toHaveLength(10);
 
     for (const route of routes) {
       expect(getSeoMetadata(route)).toBeDefined();
     }
+  });
+
+  it('should map every explicit project route to its canonical project ID', () => {
+    const projectRouteContracts = routes
+      .filter(({ path }) => path?.startsWith('projects/'))
+      .map(({ path, data }) => ({ path, projectId: data?.['projectId'] }));
+
+    expect(projectRouteContracts).toEqual(
+      portfolioProjects.map(({ id, route }) => ({
+        path: route.slice(1),
+        projectId: id,
+      })),
+    );
   });
 
   it('should use the approved, route-appropriate titles', () => {
@@ -90,6 +105,17 @@ describe('route SEO metadata', () => {
     const allMetadata = JSON.stringify(routes.map((route) => getSeoMetadata(route)));
 
     expect(allMetadata).not.toMatch(/\b(?:19|20)\d{2}\b/);
+  });
+
+  it('should keep public SEO metadata free of confidential markers and draft placeholders', () => {
+    const allMetadata = JSON.stringify(routes.map((route) => getSeoMetadata(route)));
+
+    expect(allMetadata).not.toMatch(
+      /\bpassword\b|\bconnection string\b|\blocalhost\b|\baccess token\b|\bapi key\b|dev\.azure\.com/i,
+    );
+    expect(allMetadata).not.toMatch(
+      /\bTODO\b|\bTBD\b|lorem ipsum|coming soon|replace me|example\.com|your@email/i,
+    );
   });
 });
 
