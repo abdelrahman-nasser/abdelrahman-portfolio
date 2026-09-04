@@ -1,7 +1,9 @@
 import type { Route } from '@angular/router';
 
 import { routes } from '../../app.routes';
+import { portfolioProfile } from '../../content/profile.content';
 import { SEO_ROUTE_DATA_KEY, SeoMetadata } from './seo.models';
+import { buildSocialRouteUrl } from './seo.service';
 
 const expectedTitles = new Map<string, string>([
   ['', 'Abdelrahman Hegab | Senior Software Engineer'],
@@ -45,6 +47,17 @@ describe('route SEO metadata', () => {
 
     expect(descriptions.every((description) => description.length > 0)).toBe(true);
     expect(new Set(descriptions)).toHaveLength(routes.length);
+  });
+
+  it('should generate one absolute social URL for every public route', () => {
+    const socialUrls = routes.map(({ path }) => buildSocialRouteUrl(path ? `/${path}` : '/'));
+    const expectedUrls = routes.map(({ path }) =>
+      path ? `${portfolioProfile.website}/${path}` : `${portfolioProfile.website}/`,
+    );
+
+    expect(socialUrls).toEqual(expectedUrls);
+    expect(new Set(socialUrls)).toHaveLength(10);
+    expect(socialUrls.every((url) => new URL(url).protocol === 'https:')).toBe(true);
   });
 
   it('should mark only the homepage for Person structured data', () => {

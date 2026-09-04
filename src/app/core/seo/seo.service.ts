@@ -9,6 +9,18 @@ import { portfolioProfile } from '../../content/profile.content';
 import { SEO_ROUTE_DATA_KEY, SeoMetadata } from './seo.models';
 
 export const DEFAULT_ROBOTS_CONTENT = 'index, follow';
+export const OPEN_GRAPH_TYPE = 'website';
+export const SOCIAL_IMAGE_ALT = 'Abdelrahman Hegab — Senior Software Engineer portfolio';
+export const SOCIAL_IMAGE_HEIGHT = '630';
+export const SOCIAL_IMAGE_PATH = '/assets/social/portfolio-og.png';
+export const SOCIAL_IMAGE_WIDTH = '1200';
+export const SOCIAL_SITE_NAME = portfolioProfile.name;
+export const TWITTER_CARD_TYPE = 'summary_large_image';
+
+export const SOCIAL_IMAGE_URL = new URL(
+  SOCIAL_IMAGE_PATH,
+  `${portfolioProfile.website}/`,
+).toString();
 
 export const FALLBACK_SEO_METADATA: SeoMetadata = {
   title: 'Abdelrahman Hegab | Senior Software Engineer',
@@ -87,10 +99,31 @@ export class SeoService {
     this.title.setTitle(metadata.title);
     this.setNamedMeta('description', metadata.description);
     this.setNamedMeta('robots', DEFAULT_ROBOTS_CONTENT);
+    this.applySocialMetadata(metadata);
     this.updatePersonStructuredData(metadata.structuredData === 'person');
   }
 
-  private setNamedMeta(name: 'description' | 'robots', content: string): void {
+  private applySocialMetadata(metadata: SeoMetadata): void {
+    const routeUrl = buildSocialRouteUrl(this.router.url);
+
+    this.setPropertyMeta('og:type', OPEN_GRAPH_TYPE);
+    this.setPropertyMeta('og:site_name', SOCIAL_SITE_NAME);
+    this.setPropertyMeta('og:title', metadata.title);
+    this.setPropertyMeta('og:description', metadata.description);
+    this.setPropertyMeta('og:url', routeUrl);
+    this.setPropertyMeta('og:image', SOCIAL_IMAGE_URL);
+    this.setPropertyMeta('og:image:width', SOCIAL_IMAGE_WIDTH);
+    this.setPropertyMeta('og:image:height', SOCIAL_IMAGE_HEIGHT);
+    this.setPropertyMeta('og:image:alt', SOCIAL_IMAGE_ALT);
+
+    this.setNamedMeta('twitter:card', TWITTER_CARD_TYPE);
+    this.setNamedMeta('twitter:title', metadata.title);
+    this.setNamedMeta('twitter:description', metadata.description);
+    this.setNamedMeta('twitter:image', SOCIAL_IMAGE_URL);
+    this.setNamedMeta('twitter:image:alt', SOCIAL_IMAGE_ALT);
+  }
+
+  private setNamedMeta(name: string, content: string): void {
     const selector = `name="${name}"`;
     const existingTags = this.meta.getTags(selector);
 
@@ -100,6 +133,22 @@ export class SeoService {
     }
 
     this.meta.updateTag({ name, content }, selector);
+
+    for (const duplicate of existingTags.slice(1)) {
+      this.meta.removeTagElement(duplicate);
+    }
+  }
+
+  private setPropertyMeta(property: string, content: string): void {
+    const selector = `property="${property}"`;
+    const existingTags = this.meta.getTags(selector);
+
+    if (existingTags.length === 0) {
+      this.meta.addTag({ property, content });
+      return;
+    }
+
+    this.meta.updateTag({ property, content }, selector);
 
     for (const duplicate of existingTags.slice(1)) {
       this.meta.removeTagElement(duplicate);
@@ -141,4 +190,11 @@ export class SeoService {
       duplicate.remove();
     }
   }
+}
+
+export function buildSocialRouteUrl(routerUrl: string): string {
+  const routePath = routerUrl.split(/[?#]/, 1)[0] || '/';
+  const normalizedPath = routePath === '/' ? '/' : `/${routePath.replace(/^\/+|\/+$/g, '')}`;
+
+  return new URL(normalizedPath, `${portfolioProfile.website}/`).toString();
 }
