@@ -1,0 +1,236 @@
+:host {
+  display: block;
+  min-inline-size: 0;
+  overflow-wrap: anywhere;
+}
+
+.cv-page__header-grid,
+.cv-page__section-grid {
+  display: grid;
+  gap: var(--space-8);
+}
+
+.cv-page__identity,
+.cv-page__summary,
+.cv-page__links-content {
+  max-inline-size: var(--container-reading);
+}
+
+.cv-page__eyebrow {
+  margin-block-end: var(--space-3);
+  color: var(--color-primary);
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.cv-page__name {
+  margin-block-start: var(--space-6);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-h3);
+  font-weight: var(--font-weight-semibold);
+}
+
+.cv-page__contact-summary {
+  font-style: normal;
+}
+
+.cv-page__contact-summary ul,
+.cv-page__expertise-grid,
+.cv-page__expertise-group ul,
+.cv-page__experience-list,
+.cv-page__credential-list {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.cv-page__contact-summary ul {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.cv-page__contact-summary li,
+.cv-page__metadata,
+.cv-page__credential-list p {
+  color: var(--color-text-muted);
+}
+
+.cv-page__section {
+  border-block-start: 1px solid var(--color-border);
+}
+
+.cv-page__section--alternate {
+  background: var(--color-bg-surface-secondary);
+}
+
+.cv-page__section-heading--wide {
+  margin-block-end: var(--space-10);
+}
+
+.cv-page__summary {
+  font-size: var(--font-size-body-lg);
+}
+
+.cv-page__expertise-grid {
+  display: grid;
+  border-block-start: 1px solid var(--color-border);
+}
+
+.cv-page__expertise-group {
+  padding-block: var(--space-6);
+  border-block-end: 1px solid var(--color-border);
+}
+
+.cv-page__expertise-group h3 {
+  margin-block-end: var(--space-4);
+  font-size: var(--font-size-h4);
+}
+
+.cv-page__expertise-group ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.cv-page__expertise-group li li {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-body-sm);
+}
+
+.cv-page__experience-list {
+  max-inline-size: 62rem;
+  border-block-start: 1px solid var(--color-border);
+}
+
+.cv-page__experience-entry {
+  padding-block: var(--space-10);
+  border-block-end: 1px solid var(--color-border);
+}
+
+.cv-page__experience-header {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.cv-page__experience-header h3 {
+  font-size: var(--font-size-h4);
+}
+
+.cv-page__company {
+  margin-block-start: var(--space-2);
+  color: var(--color-primary);
+  font-weight: var(--font-weight-semibold);
+}
+
+.cv-page__metadata {
+  display: grid;
+  gap: var(--space-1);
+  font-size: var(--font-size-body-sm);
+}
+
+.cv-page__metadata p {
+  color: inherit;
+}
+
+.cv-page__dates {
+  font-family: var(--font-family-mono);
+}
+
+.cv-page__experience-summary {
+  max-inline-size: var(--container-reading);
+  margin-block-start: var(--space-5);
+}
+
+.cv-page__highlights {
+  display: grid;
+  max-inline-size: var(--container-reading);
+  gap: var(--space-2);
+  padding-inline-start: var(--space-5);
+  margin: var(--space-4) 0 0;
+  color: var(--color-text-secondary);
+}
+
+.cv-page__highlights li::marker {
+  color: var(--color-primary);
+}
+
+.cv-page__credential-list {
+  border-block-start: 1px solid var(--color-border);
+}
+
+.cv-page__credential-list li {
+  padding-block: var(--space-5);
+  border-block-end: 1px solid var(--color-border);
+}
+
+.cv-page__credential-list h3 {
+  font-size: var(--font-size-body-lg);
+}
+
+.cv-page__credential-list p {
+  margin-block-start: var(--space-1);
+  font-size: var(--font-size-body-sm);
+}
+
+.cv-page__links-content > p:not(.cv-page__eyebrow) {
+  margin-block-start: var(--space-4);
+  font-size: var(--font-size-body-lg);
+}
+
+.cv-page__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  align-items: center;
+  margin-block-start: var(--space-8);
+}
+
+.cv-page__actions a {
+  display: inline-flex;
+  min-block-size: 2.75rem;
+  align-items: center;
+  font-weight: var(--font-weight-semibold);
+}
+
+@media (width >= 30rem) {
+  .cv-page__expertise-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (width >= 48rem) {
+  .cv-page__header-grid,
+  .cv-page__section-grid {
+    grid-template-columns: minmax(14rem, 2fr) minmax(0, 3fr);
+    gap: var(--space-12);
+    align-items: start;
+  }
+
+  .cv-page__contact-summary {
+    padding-block-start: var(--space-8);
+    text-align: end;
+  }
+
+  .cv-page__experience-header {
+    grid-template-columns: minmax(0, 1fr) minmax(10rem, auto);
+    gap: var(--space-8);
+  }
+
+  .cv-page__metadata {
+    text-align: end;
+  }
+}
+
+@media (width >= 64rem) {
+  .cv-page__expertise-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (width < 30rem) {
+  .cv-page__actions {
+    inline-size: 100%;
+  }
+}

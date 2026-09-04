@@ -1,5 +1,103 @@
-<section class="section">
-  <app-page-container>
-    <h1>Contact</h1>
-  </app-page-container>
+<section class="contact-page" aria-labelledby="contact-title">
+  <header class="contact-page__header section">
+    <app-page-container>
+      <div class="contact-page__header-content">
+        <p class="contact-page__eyebrow">Start a conversation</p>
+        <h1 id="contact-title">Contact</h1>
+        <p class="contact-page__intro">
+          If you'd like to discuss senior software engineering, technical leadership, enterprise
+          platforms, or product delivery, feel free to get in touch.
+        </p>
+      </div>
+    </app-page-container>
+  </header>
+
+  <section class="contact-page__section section" aria-labelledby="direct-contact-title">
+    <app-page-container>
+      <div class="contact-page__section-grid">
+        <header class="contact-page__section-heading">
+          <p class="contact-page__eyebrow">Low-friction contact</p>
+          <h2 id="direct-contact-title">Direct Contact</h2>
+          <p>Email is the simplest way to start a detailed professional conversation.</p>
+        </header>
+
+        <address class="contact-page__details">
+          <ul class="contact-page__link-list" role="list">
+            <li>
+              <span class="contact-page__link-label">Email</span>
+              <a class="contact-page__link" [href]="emailHref">
+                {{ profile.email }}
+              </a>
+            </li>
+            @if (profile.phone && phoneHref) {
+              <li>
+                <span class="contact-page__link-label">Phone</span>
+                <a class="contact-page__link" [href]="phoneHref">
+                  {{ profile.phone }}
+                </a>
+              </li>
+            }
+            <li>
+              <span class="contact-page__link-label">Location</span>
+              <span class="contact-page__value">{{ profile.location }}</span>
+            </li>
+          </ul>
+        </address>
+      </div>
+    </app-page-container>
+  </section>
+
+  <section
+    class="contact-page__section contact-page__section--profiles section"
+    aria-labelledby="profiles-title"
+  >
+    <app-page-container>
+      <div class="contact-page__section-grid">
+        <header class="contact-page__section-heading">
+          <p class="contact-page__eyebrow">Professional presence</p>
+          <h2 id="profiles-title">Professional Profiles</h2>
+          <p>Explore my professional background, public engineering work, and portfolio.</p>
+        </header>
+
+        <ul class="contact-page__profile-list" role="list">
+          <li>
+            <a [href]="profile.linkedin" target="_blank" rel="noopener noreferrer">
+              <span>
+                <strong>LinkedIn</strong>
+                <span>{{ profile.linkedin }}</span>
+              </span>
+              <span aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li>
+            <a [href]="profile.github" target="_blank" rel="noopener noreferrer">
+              <span>
+                <strong>GitHub</strong>
+                <span>{{ profile.github }}</span>
+              </span>
+              <span aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li>
+            <a [href]="profile.website" target="_blank" rel="noopener noreferrer">
+              <span>
+                <strong>Portfolio</strong>
+                <span>{{ profile.website }}</span>
+              </span>
+              <span aria-hidden="true">↗</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </app-page-container>
+  </section>
+
+  <aside class="contact-page__closing section" aria-label="Contact closing note">
+    <app-page-container>
+      <p>
+        A short introduction and a little context about the role, product, or engineering challenge
+        is always helpful. I look forward to hearing from you.
+      </p>
+    </app-page-container>
+  </aside>
 </section>
