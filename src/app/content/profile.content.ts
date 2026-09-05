@@ -1,5 +1,16 @@
 import type { PortfolioProfile } from '../models/profile.models';
 
+export const engineeringProfile = {
+  heading: 'ENGINEERING PROFILE',
+  label: 'SENIOR ENGINEER',
+  rows: [
+    { number: '01', category: 'EXPERIENCE', value: '10+ Years' },
+    { number: '02', category: 'CORE STACK', value: '.NET + Angular' },
+    { number: '03', category: 'SYSTEMS', value: 'Enterprise + SaaS' },
+    { number: '04', category: 'FOCUS', value: 'Architecture + APIs' },
+  ],
+} as const;
+
 export const portfolioProfile = {
   name: 'Abdelrahman Hegab',
   role: 'Senior Software Engineer',
