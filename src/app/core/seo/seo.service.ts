@@ -1,5 +1,5 @@
-import { DOCUMENT } from '@angular/common';
-import { DestroyRef, inject, Injectable } from '@angular/core';
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
+import { DestroyRef, inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 import { ActivatedRouteSnapshot, NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs';
@@ -17,6 +17,7 @@ export const SOCIAL_IMAGE_WIDTH = '1200';
 export const SOCIAL_SITE_NAME = portfolioProfile.name;
 export const TWITTER_CARD_TYPE = 'summary_large_image';
 
+export const HIDDEN_TAB_TITLE = 'Come back 👋 | Abdelrahman Hegab';
 export const SOCIAL_IMAGE_URL = new URL(
   SOCIAL_IMAGE_PATH,
   `${portfolioProfile.website}/`,
@@ -34,10 +35,16 @@ const PERSON_STRUCTURED_DATA_ATTRIBUTE = 'data-person-structured-data';
 export class SeoService {
   private readonly destroyRef = inject(DestroyRef);
   private readonly document = inject(DOCUMENT);
+  private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
   private readonly meta = inject(Meta);
   private readonly router = inject(Router);
   private readonly title = inject(Title);
   private started = false;
+  private currentRouteTitle = FALLBACK_SEO_METADATA.title;
+
+  get activeRouteTitle(): string {
+    return this.currentRouteTitle;
+  }
 
   start(): void {
     if (this.started) {
@@ -55,6 +62,8 @@ export class SeoService {
     if (this.router.navigated) {
       this.applyCurrentRouteMetadata();
     }
+
+    this.initializeVisibilityListener();
   }
 
   private applyCurrentRouteMetadata(): void {
@@ -98,12 +107,48 @@ export class SeoService {
   private applyMetadata(metadata: SeoMetadata): void {
     const routeUrl = buildSocialRouteUrl(this.router.url);
 
-    this.title.setTitle(metadata.title);
+    this.currentRouteTitle = metadata.title;
+
+    if (this.isDocumentHidden()) {
+      this.title.setTitle(HIDDEN_TAB_TITLE);
+    } else {
+      this.title.setTitle(metadata.title);
+    }
+
     this.setNamedMeta('description', metadata.description);
     this.setNamedMeta('robots', DEFAULT_ROBOTS_CONTENT);
     this.applySocialMetadata(metadata, routeUrl);
     this.updateCanonicalLink(routeUrl);
     this.updatePersonStructuredData(metadata.structuredData === 'person');
+  }
+
+  private initializeVisibilityListener(): void {
+    if (!this.isBrowser) {
+      return;
+    }
+
+    this.document.addEventListener('visibilitychange', this.handleVisibilityChange);
+
+    this.destroyRef.onDestroy(() => {
+      this.document.removeEventListener('visibilitychange', this.handleVisibilityChange);
+    });
+  }
+
+  private readonly handleVisibilityChange = (): void => {
+    if (this.isDocumentHidden()) {
+      this.title.setTitle(HIDDEN_TAB_TITLE);
+      return;
+    }
+
+    this.title.setTitle(this.currentRouteTitle);
+  };
+
+  private isDocumentHidden(): boolean {
+    if (!this.isBrowser) {
+      return false;
+    }
+
+    return Boolean(this.document.hidden || this.document.visibilityState === 'hidden');
   }
 
   private applySocialMetadata(metadata: SeoMetadata, routeUrl: string): void {

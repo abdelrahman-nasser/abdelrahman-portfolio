@@ -220,3 +220,43 @@ test('the social image and crawl files are available from the local app server',
   expect(sitemap.ok()).toBe(true);
   expect(await sitemap.text()).toContain('<urlset');
 });
+
+test('favicon and touch icon assets are available from the local app server and declared in the DOM', async ({
+  page,
+  request,
+}) => {
+  const ico = await request.get('/favicon.ico');
+  expect(ico.ok()).toBe(true);
+  expect(ico.headers()['content-type']).toMatch(/image\/(x-icon|vnd\.microsoft\.icon)/);
+
+  const png16 = await request.get('/favicon-16x16.png');
+  expect(png16.ok()).toBe(true);
+  expect(png16.headers()['content-type']).toContain('image/png');
+
+  const png32 = await request.get('/favicon-32x32.png');
+  expect(png32.ok()).toBe(true);
+  expect(png32.headers()['content-type']).toContain('image/png');
+
+  const appleTouch = await request.get('/apple-touch-icon.png');
+  expect(appleTouch.ok()).toBe(true);
+  expect(appleTouch.headers()['content-type']).toContain('image/png');
+
+  await page.goto('/');
+  await expect(page.locator('link[rel="icon"][type="image/x-icon"]')).toHaveAttribute(
+    'href',
+    '/favicon.ico',
+  );
+  await expect(page.locator('link[rel="icon"][sizes="32x32"]')).toHaveAttribute(
+    'href',
+    '/favicon-32x32.png',
+  );
+  await expect(page.locator('link[rel="icon"][sizes="16x16"]')).toHaveAttribute(
+    'href',
+    '/favicon-16x16.png',
+  );
+  await expect(page.locator('link[rel="apple-touch-icon"]')).toHaveAttribute(
+    'href',
+    '/apple-touch-icon.png',
+  );
+  await expect(page.locator('link[href="favicon.ico"]')).toHaveCount(0);
+});
