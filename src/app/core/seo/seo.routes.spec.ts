@@ -67,7 +67,7 @@ describe('route SEO metadata', () => {
   it('should generate one absolute social URL for every public route', () => {
     const socialUrls = routes.map(({ path }) => buildSocialRouteUrl(path ? `/${path}` : '/'));
     const expectedUrls = routes.map(({ path }) =>
-      path ? `${portfolioProfile.website}/${path}` : `${portfolioProfile.website}/`,
+      path ? `${portfolioProfile.website}/${path}/` : `${portfolioProfile.website}/`,
     );
 
     expect(socialUrls).toEqual(expectedUrls);

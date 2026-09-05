@@ -96,16 +96,17 @@ export class SeoService {
   }
 
   private applyMetadata(metadata: SeoMetadata): void {
+    const routeUrl = buildSocialRouteUrl(this.router.url);
+
     this.title.setTitle(metadata.title);
     this.setNamedMeta('description', metadata.description);
     this.setNamedMeta('robots', DEFAULT_ROBOTS_CONTENT);
-    this.applySocialMetadata(metadata);
+    this.applySocialMetadata(metadata, routeUrl);
+    this.updateCanonicalLink(routeUrl);
     this.updatePersonStructuredData(metadata.structuredData === 'person');
   }
 
-  private applySocialMetadata(metadata: SeoMetadata): void {
-    const routeUrl = buildSocialRouteUrl(this.router.url);
-
+  private applySocialMetadata(metadata: SeoMetadata, routeUrl: string): void {
     this.setPropertyMeta('og:type', OPEN_GRAPH_TYPE);
     this.setPropertyMeta('og:site_name', SOCIAL_SITE_NAME);
     this.setPropertyMeta('og:title', metadata.title);
@@ -121,6 +122,25 @@ export class SeoService {
     this.setNamedMeta('twitter:description', metadata.description);
     this.setNamedMeta('twitter:image', SOCIAL_IMAGE_URL);
     this.setNamedMeta('twitter:image:alt', SOCIAL_IMAGE_ALT);
+  }
+
+  private updateCanonicalLink(canonicalUrl: string): void {
+    const existingLinks = Array.from(
+      this.document.head.querySelectorAll<HTMLLinkElement>('link[rel="canonical"]'),
+    );
+
+    const link = existingLinks[0] ?? this.document.createElement('link');
+
+    link.setAttribute('rel', 'canonical');
+    link.setAttribute('href', canonicalUrl);
+
+    if (!link.parentNode) {
+      this.document.head.appendChild(link);
+    }
+
+    for (const duplicate of existingLinks.slice(1)) {
+      duplicate.remove();
+    }
   }
 
   private setNamedMeta(name: string, content: string): void {
@@ -194,7 +214,8 @@ export class SeoService {
 
 export function buildSocialRouteUrl(routerUrl: string): string {
   const routePath = routerUrl.split(/[?#]/, 1)[0] || '/';
-  const normalizedPath = routePath === '/' ? '/' : `/${routePath.replace(/^\/+|\/+$/g, '')}`;
+  const trimmed = routePath.replace(/^\/+|\/+$/g, '');
+  const normalizedPath = trimmed.length === 0 ? '/' : `/${trimmed}/`;
 
   return new URL(normalizedPath, `${portfolioProfile.website}/`).toString();
 }

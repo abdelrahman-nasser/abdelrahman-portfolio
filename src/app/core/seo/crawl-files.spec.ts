@@ -21,7 +21,7 @@ describe('static crawl files', () => {
     const parserErrors = document.querySelectorAll('parsererror');
     const locations = parseSitemapLocations();
     const expectedLocations = routes.map(({ path }) =>
-      path ? `${portfolioProfile.website}/${path}` : `${portfolioProfile.website}/`,
+      path ? `${portfolioProfile.website}/${path}/` : `${portfolioProfile.website}/`,
     );
 
     expect(parserErrors).toHaveLength(0);

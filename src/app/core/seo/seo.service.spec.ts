@@ -74,6 +74,7 @@ describe('SeoService', () => {
       'meta[property^="og:"]',
       'meta[name^="twitter:"]',
       'script[data-person-structured-data]',
+      'link[rel="canonical"]',
     ]) {
       document.head.querySelectorAll(selector).forEach((element) => element.remove());
     }
@@ -108,7 +109,7 @@ describe('SeoService', () => {
     expect(meta.getTag('property="og:description"')?.content).toBe(
       FALLBACK_SEO_METADATA.description,
     );
-    expect(meta.getTag('property="og:url"')?.content).toBe(`${portfolioProfile.website}/fallback`);
+    expect(meta.getTag('property="og:url"')?.content).toBe(`${portfolioProfile.website}/fallback/`);
     expect(meta.getTag('name="twitter:title"')?.content).toBe(FALLBACK_SEO_METADATA.title);
     expect(meta.getTag('name="twitter:description"')?.content).toBe(
       FALLBACK_SEO_METADATA.description,
@@ -120,7 +121,7 @@ describe('SeoService', () => {
 
     expect(meta.getTag('property="og:title"')?.content).toBe(otherMetadata.title);
     expect(meta.getTag('property="og:description"')?.content).toBe(otherMetadata.description);
-    expect(meta.getTag('property="og:url"')?.content).toBe(`${portfolioProfile.website}/other`);
+    expect(meta.getTag('property="og:url"')?.content).toBe(`${portfolioProfile.website}/other/`);
     expect(meta.getTag('name="twitter:title"')?.content).toBe(otherMetadata.title);
     expect(meta.getTag('name="twitter:description"')?.content).toBe(otherMetadata.description);
   });
@@ -147,7 +148,7 @@ describe('SeoService', () => {
 
     expect(meta.getTag('property="og:title"')?.content).toBe(otherMetadata.title);
     expect(meta.getTag('property="og:description"')?.content).toBe(otherMetadata.description);
-    expect(meta.getTag('property="og:url"')?.content).toBe(`${portfolioProfile.website}/other`);
+    expect(meta.getTag('property="og:url"')?.content).toBe(`${portfolioProfile.website}/other/`);
     expect(meta.getTag('name="twitter:title"')?.content).toBe(otherMetadata.title);
     expect(meta.getTag('name="twitter:description"')?.content).toBe(otherMetadata.description);
 
@@ -210,5 +211,34 @@ describe('SeoService', () => {
     await router.navigateByUrl('/');
 
     expect(document.head.querySelectorAll('script[data-person-structured-data]')).toHaveLength(1);
+  });
+
+  it('should insert and update the canonical link for each route', async () => {
+    await router.navigateByUrl('/');
+
+    const canonicalHome = document.head.querySelector<HTMLLinkElement>('link[rel="canonical"]');
+    expect(canonicalHome).not.toBeNull();
+    expect(canonicalHome?.getAttribute('href')).toBe(`${portfolioProfile.website}/`);
+    expect(document.head.querySelectorAll('link[rel="canonical"]')).toHaveLength(1);
+
+    await router.navigateByUrl('/other');
+
+    const canonicalOther = document.head.querySelector<HTMLLinkElement>('link[rel="canonical"]');
+    expect(canonicalOther).not.toBeNull();
+    expect(canonicalOther?.getAttribute('href')).toBe(`${portfolioProfile.website}/other/`);
+    expect(document.head.querySelectorAll('link[rel="canonical"]')).toHaveLength(1);
+  });
+
+  it('should not duplicate canonical link after repeated navigations', async () => {
+    await router.navigateByUrl('/');
+    await router.navigateByUrl('/other');
+    await router.navigateByUrl('/');
+    await router.navigateByUrl('/other');
+    await router.navigateByUrl('/');
+
+    expect(document.head.querySelectorAll('link[rel="canonical"]')).toHaveLength(1);
+    expect(
+      document.head.querySelector<HTMLLinkElement>('link[rel="canonical"]')?.getAttribute('href'),
+    ).toBe(`${portfolioProfile.website}/`);
   });
 });
