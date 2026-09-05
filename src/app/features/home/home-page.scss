@@ -37,8 +37,9 @@
 }
 
 .hero h1 {
-  font-size: var(--font-size-display-xl);
+  font-size: clamp(2rem, 6vw, var(--font-size-display-xl));
   line-height: var(--line-height-display-xl);
+  overflow-wrap: break-word;
 }
 
 .hero__positioning {

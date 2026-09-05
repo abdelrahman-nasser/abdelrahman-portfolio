@@ -2,8 +2,8 @@
 
 Professional engineering portfolio for **Abdelrahman Hegab**, Senior Software Engineer specializing in **.NET, Angular, software architecture, enterprise SaaS, integrations, and government digital platforms**.
 
-> This repository is currently in the **planning-complete / implementation-not-started** stage.  
-> The product requirements, content model, information architecture, design system, technical architecture, testing strategy, SEO strategy, implementation roadmap, and AI-agent rules are already defined before Angular initialization.
+> This repository contains the implemented Angular 22 portfolio, its automated quality pipeline,
+> and its Cloudflare Pages deployment configuration.
 
 ---
 
@@ -288,30 +288,30 @@ Those technologies and architecture patterns are demonstrated through real proje
 
 # Rendering & Hosting
 
-Planned delivery architecture:
+Delivery architecture:
 
 ```text
 GitHub
-   ↓
-GitHub Actions
-   ↓
-Angular Build / Prerender
-   ↓
-Static Output
-   ↓
-Cloudflare Pages
-   ↓
-Cloudflare CDN
-   ↓
-Custom Domain
+   |
+   +--> GitHub Actions quality validation
+   |
+   +--> Cloudflare Pages Git integration
+          Angular build / prerender
+          static output
+          preview deployments
+          main --> production
 ```
 
-Pull requests should eventually receive preview deployments for:
+Production: <https://abdelrahman-hegab.pages.dev>
+
+Non-production branches are eligible for Cloudflare preview deployments for:
 
 - visual review;
 - responsive QA;
 - recruiter-style review;
 - accessibility validation.
+
+See [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md) for the deployment contract and smoke checklist.
 
 ---
 
@@ -926,13 +926,13 @@ See [`docs/ROADMAP.md`](docs/ROADMAP.md) for details.
 [x] Implementation Roadmap
 [x] README
 
-[ ] Angular initialization
-[ ] UI implementation
-[ ] Runtime content
-[ ] Case-study rendering
-[ ] E2E
-[ ] CI/CD
-[ ] Cloudflare deployment
+[x] Angular initialization
+[x] UI implementation
+[x] Runtime content
+[x] Case-study rendering
+[x] E2E
+[x] CI/CD
+[x] Cloudflare deployment
 [ ] Production launch
 ```
 
@@ -942,32 +942,12 @@ See [`docs/ROADMAP.md`](docs/ROADMAP.md) for details.
 
 ## Current State
 
-Angular has **not yet been initialized**.
-
-There is intentionally no valid application setup command yet.
-
-The next implementation step is:
-
-```text
-Create branch:
-chore/angular-initialization
-```
-
-Then initialize Angular 22 according to:
-
-```text
-docs/ARCHITECTURE.md
-docs/ROADMAP.md
-AGENTS.md
-```
-
-The exact CLI command should be chosen using the current Angular 22 CLI and supported Node version at implementation time.
+The Angular application, automated tests, GitHub Actions quality pipeline, and Cloudflare Pages
+Git deployment are implemented. Node `24.20.0` is pinned in `.nvmrc`.
 
 ---
 
-# Planned Development Commands
-
-After initialization, the repository should expose commands similar to:
+# Development Commands
 
 ```bash
 npm ci
@@ -978,9 +958,8 @@ npm run lint
 npm run test:e2e
 ```
 
-Exact scripts will be documented once the Angular project exists.
-
-Do not copy old Angular/Karma commands into the repository without verifying the actual Angular 22 setup.
+Run `npm run quality` for the local formatting, lint, unit/component, and production-build gate.
+Run `npm run test:e2e` for the Playwright browser suite.
 
 ---
 

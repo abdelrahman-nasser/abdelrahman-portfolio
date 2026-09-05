@@ -49,7 +49,7 @@ describe('static crawl files', () => {
   });
 
   it('should keep profile, sitemap, robots, route social URLs, and social image on one origin', () => {
-    const approvedOrigin = 'https://abdelrahman-nasser.github.io';
+    const approvedOrigin = 'https://abdelrahman-hegab.pages.dev';
     const sitemapLocations = parseSitemapLocations();
     const socialRouteUrls = routes.map(({ path }) => buildSocialRouteUrl(path ? `/${path}` : '/'));
 

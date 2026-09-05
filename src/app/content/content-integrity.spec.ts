@@ -77,7 +77,7 @@ describe('canonical public content integrity', () => {
       location: 'Cairo, Egypt',
       email: 'abdelrahman.n.hegab@outlook.com',
       phone: '+20 1010 200 471',
-      website: 'https://abdelrahman-nasser.github.io',
+      website: 'https://abdelrahman-hegab.pages.dev',
       linkedin: 'https://linkedin.com/in/abdelrahman-nasser',
       github: 'https://github.com/abdelrahman-nasser',
     });

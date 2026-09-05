@@ -1644,7 +1644,7 @@ Exact rules belong in config, not repeated in every prompt.
 
 Use GitHub Actions.
 
-Pull request pipeline:
+GitHub Actions is the quality and validation pipeline:
 
 ```text
 Checkout
@@ -1662,31 +1662,24 @@ Production Build / Prerender
 Playwright
 ```
 
-If E2E runtime makes every PR too slow initially, split:
-
-```text
-quality.yml
-e2e.yml
-```
-
-but the final required checks should remain clear.
+Cloudflare Pages deployment remains separate from this workflow.
 
 ---
 
 # 78. Production Deployment
 
-Preferred:
+Approved deployment flow:
 
 ```text
-GitHub repository
-        ↓
-Cloudflare Pages Git integration
-        ↓
-production build
-        ↓
-static output
-        ↓
-Cloudflare CDN
+GitHub
+   |
+   +--> GitHub Actions
+   |      quality + tests + build validation
+   |
+   +--> Cloudflare Pages Git integration
+          Angular static build
+          preview deployments
+          main --> production
 ```
 
 Cloudflare Pages should deploy `main`.
@@ -1697,17 +1690,17 @@ Pull requests receive preview deployments.
 
 # 79. Cloudflare Pages
 
-Target:
+Production configuration:
 
 ```text
 Production branch: main
 Build command: npm run build
-Build output: Angular static browser output
+Build output: dist/abdelrahman-portfolio/browser
+Node version: .nvmrc (24.20.0)
 ```
 
-The exact directory must be verified after Angular project initialization because Angular/Cloudflare tooling can differ slightly by version/config.
-
-Do not hardcode a guessed deployment folder before the first production build.
+The output directory was verified from the Angular 22 production build before Cloudflare Pages
+was configured. See `docs/DEPLOYMENT.md` for the operational deployment contract.
 
 ---
 
