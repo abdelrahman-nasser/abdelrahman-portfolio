@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, PLATFORM_ID } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { Meta, Title } from '@angular/platform-browser';
 import { provideRouter, Router, Routes } from '@angular/router';
@@ -8,6 +8,7 @@ import { SeoRouteData } from './seo.models';
 import {
   DEFAULT_ROBOTS_CONTENT,
   FALLBACK_SEO_METADATA,
+  HIDDEN_TAB_TITLE,
   OPEN_GRAPH_TYPE,
   SOCIAL_IMAGE_ALT,
   SOCIAL_IMAGE_HEIGHT,
@@ -49,6 +50,15 @@ const testRoutes: Routes = [
   },
 ];
 
+function setDocumentVisibility(hidden: boolean): void {
+  Object.defineProperty(document, 'hidden', { configurable: true, value: hidden });
+  Object.defineProperty(document, 'visibilityState', {
+    configurable: true,
+    value: hidden ? 'hidden' : 'visible',
+  });
+  document.dispatchEvent(new Event('visibilitychange'));
+}
+
 describe('SeoService', () => {
   let meta: Meta;
   let router: Router;
@@ -68,6 +78,8 @@ describe('SeoService', () => {
   });
 
   afterEach(() => {
+    setDocumentVisibility(false);
+
     for (const selector of [
       'meta[name="description"]',
       'meta[name="robots"]',
@@ -240,5 +252,111 @@ describe('SeoService', () => {
     expect(
       document.head.querySelector<HTMLLinkElement>('link[rel="canonical"]')?.getAttribute('href'),
     ).toBe(`${portfolioProfile.website}/`);
+  });
+
+  describe('Page Visibility title behavior', () => {
+    it('should preserve route title when the tab is visible', async () => {
+      await router.navigateByUrl('/other');
+
+      expect(title.getTitle()).toBe(otherMetadata.title);
+      expect(service.activeRouteTitle).toBe(otherMetadata.title);
+    });
+
+    it('should set title to HIDDEN_TAB_TITLE when document becomes hidden', async () => {
+      await router.navigateByUrl('/other');
+      expect(title.getTitle()).toBe(otherMetadata.title);
+
+      setDocumentVisibility(true);
+
+      expect(title.getTitle()).toBe(HIDDEN_TAB_TITLE);
+      expect(service.activeRouteTitle).toBe(otherMetadata.title);
+    });
+
+    it('should restore the exact route title when the user returns', async () => {
+      await router.navigateByUrl('/other');
+      setDocumentVisibility(true);
+      expect(title.getTitle()).toBe(HIDDEN_TAB_TITLE);
+
+      setDocumentVisibility(false);
+
+      expect(title.getTitle()).toBe(otherMetadata.title);
+    });
+
+    it('should restore the specific current route title and not default to the homepage title', async () => {
+      await router.navigateByUrl('/other');
+      setDocumentVisibility(true);
+      setDocumentVisibility(false);
+
+      expect(title.getTitle()).toBe(otherMetadata.title);
+      expect(title.getTitle()).not.toBe(homeMetadata.title);
+    });
+
+    it('should update active route title and restore the new route title when route changes while hidden', async () => {
+      await router.navigateByUrl('/');
+      expect(title.getTitle()).toBe(homeMetadata.title);
+
+      setDocumentVisibility(true);
+      expect(title.getTitle()).toBe(HIDDEN_TAB_TITLE);
+
+      await router.navigateByUrl('/other');
+      expect(title.getTitle()).toBe(HIDDEN_TAB_TITLE);
+      expect(service.activeRouteTitle).toBe(otherMetadata.title);
+
+      setDocumentVisibility(false);
+      expect(title.getTitle()).toBe(otherMetadata.title);
+    });
+
+    it('should handle repeated visibility change events without breaking state', async () => {
+      await router.navigateByUrl('/other');
+
+      setDocumentVisibility(true);
+      expect(title.getTitle()).toBe(HIDDEN_TAB_TITLE);
+
+      setDocumentVisibility(true);
+      expect(title.getTitle()).toBe(HIDDEN_TAB_TITLE);
+
+      setDocumentVisibility(false);
+      expect(title.getTitle()).toBe(otherMetadata.title);
+
+      setDocumentVisibility(false);
+      expect(title.getTitle()).toBe(otherMetadata.title);
+
+      setDocumentVisibility(true);
+      expect(title.getTitle()).toBe(HIDDEN_TAB_TITLE);
+
+      setDocumentVisibility(false);
+      expect(title.getTitle()).toBe(otherMetadata.title);
+    });
+
+    it('should not alter Open Graph, Twitter, canonical, or structured data when tab is hidden', async () => {
+      await router.navigateByUrl('/other');
+      setDocumentVisibility(true);
+
+      expect(meta.getTag('property="og:title"')?.content).toBe(otherMetadata.title);
+      expect(meta.getTag('name="twitter:title"')?.content).toBe(otherMetadata.title);
+      expect(
+        document.head.querySelector<HTMLLinkElement>('link[rel="canonical"]')?.getAttribute('href'),
+      ).toBe(`${portfolioProfile.website}/other/`);
+      expect(document.head.querySelectorAll('script[data-person-structured-data]')).toHaveLength(0);
+    });
+
+    it('should keep route title and avoid attaching browser listener when running on non-browser platform', async () => {
+      TestBed.resetTestingModule();
+      TestBed.configureTestingModule({
+        providers: [provideRouter(testRoutes), { provide: PLATFORM_ID, useValue: 'server' }],
+      });
+
+      const serverService = TestBed.inject(SeoService);
+      const serverRouter = TestBed.inject(Router);
+      const serverTitle = TestBed.inject(Title);
+      serverService.start();
+
+      await serverRouter.navigateByUrl('/other');
+
+      expect(serverTitle.getTitle()).toBe(otherMetadata.title);
+
+      setDocumentVisibility(true);
+      expect(serverTitle.getTitle()).toBe(otherMetadata.title);
+    });
   });
 });
