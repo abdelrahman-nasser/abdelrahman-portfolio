@@ -99,12 +99,11 @@
 
 .ep-expertise-group__num {
   flex-shrink: 0;
-  color: var(--color-primary);
+  color: var(--color-primary-600);
   font-family: var(--font-family-mono);
   font-size: var(--font-size-caption);
   font-weight: var(--font-weight-semibold);
   letter-spacing: 0.06em;
-  opacity: 0.7;
 }
 
 .ep-expertise-group__title {
@@ -312,7 +311,7 @@
   border-block-start: 1px solid var(--color-border);
   font-size: var(--font-size-body-sm);
   line-height: var(--line-height-body);
-  color: var(--color-text-muted);
+  color: var(--color-text-secondary);
 }
 
 // ── Closing CTA ───────────────────────────────────────────────────────────────
