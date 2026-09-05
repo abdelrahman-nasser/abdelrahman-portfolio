@@ -61,7 +61,7 @@ test('contact links expose the approved destinations without leaving the site', 
   );
 });
 
-test('CV renders its canonical profile, experience, and credentials with the approved PDF download', async ({
+test('CV renders its canonical profile, experience, and certifications with the approved PDF download', async ({
   page,
 }) => {
   await page.goto('/cv');
@@ -83,7 +83,47 @@ test('CV renders its canonical profile, experience, and credentials with the app
     await expect(page.getByText(employer, { exact: true })).toBeVisible();
   }
 
-  await expect(page.getByRole('heading', { name: 'Credentials', level: 2 })).toBeVisible();
+  const cvCertificationsSection = page.locator(
+    'section[aria-labelledby="cv-certifications-title"]',
+  );
+  await expect(cvCertificationsSection).toBeVisible();
+  await expect(
+    cvCertificationsSection.getByRole('heading', { name: 'Certifications', level: 2 }),
+  ).toBeVisible();
+  await expect(
+    cvCertificationsSection.getByRole('heading', { name: 'Microsoft', level: 3 }),
+  ).toBeVisible();
+
+  const canonicalCertifications = [
+    'Microsoft Certified Trainer (MCT)',
+    'Microsoft Certified Solutions Developer (MCSD): Web Applications',
+    'Microsoft Certified Solutions Associate (MCSA): Web Applications',
+    'Microsoft Specialist: Programming in HTML5 with JavaScript and CSS3',
+    'Microsoft Certified Professional (MCP)',
+  ];
+
+  for (const title of canonicalCertifications) {
+    await expect(
+      cvCertificationsSection.getByRole('heading', { name: title, level: 4 }),
+    ).toBeVisible();
+  }
+
+  const cvTranscriptLink = cvCertificationsSection.getByRole('link', {
+    name: 'View Microsoft Transcript',
+    exact: true,
+  });
+  await expect(cvTranscriptLink).toBeVisible();
+  await expect(cvTranscriptLink).toHaveAttribute(
+    'href',
+    'https://learn.microsoft.com/en-us/users/abdelrahman91/transcript/vpjp9iq53rz38zk',
+  );
+  await expect(cvTranscriptLink).toHaveAttribute('target', '_blank');
+  await expect(cvTranscriptLink).toHaveAttribute('rel', 'noopener noreferrer');
+
+  // Verify obsolete headings are NOT present
+  await expect(page.getByRole('heading', { name: 'Credentials', level: 2 })).toHaveCount(0);
+  await expect(page.getByRole('heading', { name: 'Microsoft Certifications' })).toHaveCount(0);
+
   const downloadLink = page.getByRole('link', { name: 'Download CV', exact: true });
   await expect(downloadLink).toBeVisible();
   await expect(downloadLink).toHaveAttribute(
@@ -95,6 +135,45 @@ test('CV renders its canonical profile, experience, and credentials with the app
     'Abdelrahman-Hegab-Senior-Software-Engineer-CV.pdf',
   );
   await expect(page.getByText('PDF · Abdelrahman Hegab · Senior Software Engineer')).toBeVisible();
+});
+
+test('homepage renders the generalized Certifications section with Microsoft provider and transcript action', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  const section = page.locator('section.certifications');
+  await expect(section).toBeVisible();
+  await expect(section.getByRole('heading', { name: 'Certifications', level: 2 })).toBeVisible();
+  await expect(section.getByRole('heading', { name: 'Microsoft', level: 3 })).toBeVisible();
+
+  const canonicalCertifications = [
+    'Microsoft Certified Trainer (MCT)',
+    'Microsoft Certified Solutions Developer (MCSD): Web Applications',
+    'Microsoft Certified Solutions Associate (MCSA): Web Applications',
+    'Microsoft Specialist: Programming in HTML5 with JavaScript and CSS3',
+    'Microsoft Certified Professional (MCP)',
+  ];
+
+  for (const title of canonicalCertifications) {
+    await expect(section.getByRole('heading', { name: title, level: 4 })).toBeVisible();
+  }
+
+  const transcriptLink = section.getByRole('link', {
+    name: 'View Microsoft Transcript',
+    exact: true,
+  });
+  await expect(transcriptLink).toBeVisible();
+  await expect(transcriptLink).toHaveAttribute(
+    'href',
+    'https://learn.microsoft.com/en-us/users/abdelrahman91/transcript/vpjp9iq53rz38zk',
+  );
+  await expect(transcriptLink).toHaveAttribute('target', '_blank');
+  await expect(transcriptLink).toHaveAttribute('rel', 'noopener noreferrer');
+
+  // Verify obsolete headings are NOT present
+  await expect(page.getByRole('heading', { name: 'Credentials', level: 2 })).toHaveCount(0);
+  await expect(page.getByRole('heading', { name: 'Microsoft Certifications' })).toHaveCount(0);
 });
 
 test('homepage hero Download CV action targets the approved static PDF', async ({ page }) => {

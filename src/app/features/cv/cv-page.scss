@@ -76,7 +76,7 @@
 .cv-page__expertise-grid,
 .cv-page__expertise-group ul,
 .cv-page__experience-list,
-.cv-page__credential-list {
+.cv-page__certification-list {
   padding: 0;
   margin: 0;
   list-style: none;
@@ -89,7 +89,7 @@
 
 .cv-page__contact-summary li,
 .cv-page__metadata,
-.cv-page__credential-list p {
+.cv-page__certification-list p {
   color: var(--color-text-muted);
 }
 
@@ -192,22 +192,87 @@
   color: var(--color-primary);
 }
 
-.cv-page__credential-list {
+.cv-page__certifications {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.cv-page__provider-header {
+  padding-block-end: var(--space-3);
+  margin-block-end: var(--space-2);
+}
+
+.cv-page__provider-name {
+  margin: 0;
+  font-size: var(--font-size-h3);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+}
+
+.cv-page__certification-list {
   border-block-start: 1px solid var(--color-border);
 }
 
-.cv-page__credential-list li {
+.cv-page__certification-list li {
   padding-block: var(--space-5);
   border-block-end: 1px solid var(--color-border);
 }
 
-.cv-page__credential-list h3 {
+.cv-page__certification-list h4 {
+  margin: 0;
   font-size: var(--font-size-body-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
 }
 
-.cv-page__credential-list p {
+.cv-page__certification-list p {
   margin-block-start: var(--space-1);
   font-size: var(--font-size-body-sm);
+}
+
+.cv-page__transcript-action {
+  margin-block-start: var(--space-5);
+}
+
+.cv-page__transcript-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-block-size: 2.5rem;
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-surface);
+  color: var(--color-primary);
+  font-size: var(--font-size-body-sm);
+  font-weight: var(--font-weight-semibold);
+  text-decoration: none;
+  transition:
+    background var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard);
+
+  &:hover {
+    border-color: var(--color-primary);
+    background: var(--color-primary-soft);
+    color: var(--color-primary-hover);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+}
+
+.cv-page__transcript-icon {
+  font-size: 1.1em;
+  line-height: 1;
+  transition: transform var(--duration-fast) var(--ease-standard);
+}
+
+.cv-page__transcript-link:hover .cv-page__transcript-icon {
+  transform: translate(2px, -2px);
 }
 
 .cv-page__links-content > p:not(.cv-page__eyebrow) {

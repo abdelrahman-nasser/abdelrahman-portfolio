@@ -212,7 +212,7 @@ Planned order:
 06 Engineering Expertise
 07 How I Engineer
 08 AI-Augmented Engineering
-09 Credentials
+09 Certifications
 10 Contact CTA
 11 Footer
 ```

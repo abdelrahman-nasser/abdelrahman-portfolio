@@ -1001,17 +1001,19 @@ Confirmed:
 
 ---
 
-# 11. Credentials
+# 11. Certifications
 
 ## Microsoft
 
 - Microsoft Certified Trainer (MCT)
-- Microsoft Certified Solutions Developer (MCSD)
+- Microsoft Certified Solutions Developer (MCSD): Web Applications
 - Microsoft Certified Solutions Associate (MCSA): Web Applications
+- Microsoft Specialist: Programming in HTML5 with JavaScript and CSS3
+- Microsoft Certified Professional (MCP)
 
 Official transcript:
 
-**Microsoft Learn**
+**Microsoft Learn:** `https://learn.microsoft.com/en-us/users/abdelrahman91/transcript/vpjp9iq53rz38zk`
 
 The site should avoid implying retired credentials are currently active if their official status differs.
 

@@ -8,7 +8,7 @@ import {
   portfolioProfile,
   professionalSnapshot,
   expertiseGroups,
-  portfolioCredentials,
+  portfolioCertificationProviders,
 } from '../../content';
 import { HomePage } from './home-page';
 
@@ -216,38 +216,41 @@ describe('HomePage', () => {
     expect(steps).toHaveLength(aiAugmentedEngineering.workflow.length);
   });
 
-  it('composes Credentials directly after AI-Augmented Engineering', () => {
-    const credentialsEl = compiled.querySelector('app-credentials');
+  it('composes Certifications directly after AI-Augmented Engineering', () => {
+    const certificationsEl = compiled.querySelector('app-certifications');
 
-    expect(credentialsEl).not.toBeNull();
-    expect(credentialsEl?.previousElementSibling?.matches('app-ai-engineering')).toBe(true);
-    expect(credentialsEl?.querySelector('section.credentials')).not.toBeNull();
+    expect(certificationsEl).not.toBeNull();
+    expect(certificationsEl?.previousElementSibling?.matches('app-ai-engineering')).toBe(true);
+    expect(certificationsEl?.querySelector('section.certifications')).not.toBeNull();
   });
 
-  it('renders the Credentials section heading as an h2', () => {
-    const section = compiled.querySelector('section.credentials');
+  it('renders the Certifications section heading as an h2', () => {
+    const section = compiled.querySelector('section.certifications');
     const heading = section?.querySelector('h2');
 
-    expect(section?.getAttribute('aria-labelledby')).toBe('credentials-title');
-    expect(heading?.id).toBe('credentials-title');
-    expect(heading?.textContent?.trim()).toBe('Credentials');
+    expect(section?.getAttribute('aria-labelledby')).toBe('certifications-title');
+    expect(heading?.id).toBe('certifications-title');
+    expect(heading?.textContent?.trim()).toBe('Certifications');
   });
 
-  it('renders all canonical credentials in the homepage', () => {
-    const items = Array.from(compiled.querySelectorAll('.credentials__item'));
+  it('renders all canonical certifications in the homepage', () => {
+    const microsoftProvider = portfolioCertificationProviders.find((p) => p.id === 'microsoft');
+    expect(microsoftProvider).toBeDefined();
 
-    expect(items).toHaveLength(portfolioCredentials.length);
+    const items = Array.from(compiled.querySelectorAll('.certifications__item'));
 
-    for (const [index, cred] of portfolioCredentials.entries()) {
-      expect(items[index]?.querySelector('h3')?.textContent?.trim()).toBe(cred.title);
+    expect(items).toHaveLength(microsoftProvider!.certifications.length);
+
+    for (const [index, cert] of microsoftProvider!.certifications.entries()) {
+      expect(items[index]?.querySelector('h4')?.textContent?.trim()).toBe(cert.title);
     }
   });
 
-  it('composes Contact CTA directly after Credentials', () => {
+  it('composes Contact CTA directly after Certifications', () => {
     const contactCtaEl = compiled.querySelector('app-contact-cta');
 
     expect(contactCtaEl).not.toBeNull();
-    expect(contactCtaEl?.previousElementSibling?.matches('app-credentials')).toBe(true);
+    expect(contactCtaEl?.previousElementSibling?.matches('app-certifications')).toBe(true);
     expect(contactCtaEl?.querySelector('section.contact-cta')).not.toBeNull();
   });
 

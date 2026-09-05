@@ -1,5 +1,5 @@
 import { aboutPageContent } from './about.content';
-import { portfolioCredentials } from './credentials.content';
+import { portfolioCertificationProviders } from './certifications.content';
 import { aiAugmentedEngineering, engineeringPrinciples } from './engineering.content';
 import { portfolioExperience } from './experience.content';
 import { expertiseGroups } from './expertise.content';
@@ -9,7 +9,13 @@ import { portfolioProjects } from './projects.content';
 import { professionalSnapshot } from './snapshot.content';
 
 export { aboutPageContent } from './about.content';
-export { portfolioCredentials } from './credentials.content';
+export {
+  canonicalMicrosoftCertifications,
+  microsoftCertificationProvider,
+  microsoftTranscriptVerification,
+  portfolioCertificationProviders,
+  portfolioCertifications,
+} from './certifications.content';
 export { aiAugmentedEngineering, engineeringPrinciples } from './engineering.content';
 export { portfolioExperience } from './experience.content';
 export { expertiseGroups } from './expertise.content';
@@ -32,7 +38,7 @@ export const publicPortfolioContent = {
   projectCaseStudies,
   experience: portfolioExperience,
   expertise: expertiseGroups,
-  credentials: portfolioCredentials,
+  certifications: portfolioCertificationProviders,
   engineeringPrinciples,
   aiAugmentedEngineering,
 } as const;
