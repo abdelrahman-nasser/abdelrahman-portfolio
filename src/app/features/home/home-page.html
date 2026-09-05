@@ -9,7 +9,12 @@
 
         <div class="hero__actions">
           <a class="hero__action hero__action--primary" routerLink="/projects">View My Work</a>
-          <a class="hero__action hero__action--secondary" routerLink="/cv">Download CV</a>
+          <a
+            class="hero__action hero__action--secondary"
+            [href]="profile.cv.pdfUrl"
+            [attr.download]="profile.cv.downloadFileName"
+            >Download CV</a
+          >
         </div>
       </div>
 

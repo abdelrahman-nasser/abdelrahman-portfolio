@@ -94,10 +94,6 @@
   color: var(--color-primary-hover);
 }
 
-.site-header__cv-action-prefix {
-  display: none;
-}
-
 .site-header__menu-trigger {
   display: inline-flex;
   inline-size: 2.75rem;
@@ -191,10 +187,6 @@
 
   .site-header__cv-action {
     display: inline-flex;
-  }
-
-  .site-header__cv-action-prefix {
-    display: inline;
   }
 
   .site-header__menu-trigger,

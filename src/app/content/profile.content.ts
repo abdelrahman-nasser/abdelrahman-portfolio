@@ -12,6 +12,11 @@ export const engineeringProfile = {
 } as const;
 
 export const portfolioProfile = {
+  cv: {
+    pageUrl: '/cv',
+    pdfUrl: '/assets/cv/Abdelrahman-Hegab-Senior-Software-Engineer-CV.pdf',
+    downloadFileName: 'Abdelrahman-Hegab-Senior-Software-Engineer-CV.pdf',
+  },
   name: 'Abdelrahman Hegab',
   role: 'Senior Software Engineer',
   headline: 'Senior Software Engineer | .NET & Angular | Software Architecture & Microservices',

@@ -61,7 +61,7 @@ test('contact links expose the approved destinations without leaving the site', 
   );
 });
 
-test('CV renders its canonical profile, experience, and credentials without a fake PDF link', async ({
+test('CV renders its canonical profile, experience, and credentials with the approved PDF download', async ({
   page,
 }) => {
   await page.goto('/cv');
@@ -84,7 +84,44 @@ test('CV renders its canonical profile, experience, and credentials without a fa
   }
 
   await expect(page.getByRole('heading', { name: 'Credentials', level: 2 })).toBeVisible();
-  await expect(page.locator('a[href$=".pdf"], a[download]')).toHaveCount(0);
+  const downloadLink = page.getByRole('link', { name: 'Download CV', exact: true });
+  await expect(downloadLink).toBeVisible();
+  await expect(downloadLink).toHaveAttribute(
+    'href',
+    '/assets/cv/Abdelrahman-Hegab-Senior-Software-Engineer-CV.pdf',
+  );
+  await expect(downloadLink).toHaveAttribute(
+    'download',
+    'Abdelrahman-Hegab-Senior-Software-Engineer-CV.pdf',
+  );
+  await expect(page.getByText('PDF · Abdelrahman Hegab · Senior Software Engineer')).toBeVisible();
+});
+
+test('homepage hero Download CV action targets the approved static PDF', async ({ page }) => {
+  await page.goto('/');
+
+  const heroDownloadCv = page.getByRole('link', { name: 'Download CV', exact: true });
+  await expect(heroDownloadCv).toBeVisible();
+  await expect(heroDownloadCv).toHaveAttribute(
+    'href',
+    '/assets/cv/Abdelrahman-Hegab-Senior-Software-Engineer-CV.pdf',
+  );
+  await expect(heroDownloadCv).toHaveAttribute(
+    'download',
+    'Abdelrahman-Hegab-Senior-Software-Engineer-CV.pdf',
+  );
+});
+
+test('the approved downloadable CV PDF is available as a static asset', async ({ request }) => {
+  const response = await request.get(
+    '/assets/cv/Abdelrahman-Hegab-Senior-Software-Engineer-CV.pdf',
+  );
+  expect(response.ok()).toBe(true);
+  expect(response.headers()['content-type']).toContain('application/pdf');
+
+  const buffer = await response.body();
+  expect(buffer.length).toBe(275107);
+  expect(buffer.subarray(0, 5).toString('utf8')).toBe('%PDF-');
 });
 
 test('the social image and crawl files are available from the local app server', async ({

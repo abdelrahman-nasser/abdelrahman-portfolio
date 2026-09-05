@@ -111,14 +111,22 @@ describe('HomePage', () => {
     expect(interactiveElements).toHaveLength(0);
   });
 
-  it('provides internal routes for the hero actions', () => {
+  it('provides approved destinations for the hero actions', () => {
     const actions = Array.from(compiled.querySelectorAll<HTMLAnchorElement>('.hero__action'));
 
     expect(
-      actions.map((action) => [action.textContent?.trim(), action.getAttribute('href')]),
+      actions.map((action) => [
+        action.textContent?.trim(),
+        action.getAttribute('href'),
+        action.getAttribute('download'),
+      ]),
     ).toEqual([
-      ['View My Work', '/projects'],
-      ['Download CV', '/cv'],
+      ['View My Work', '/projects', null],
+      [
+        'Download CV',
+        '/assets/cv/Abdelrahman-Hegab-Senior-Software-Engineer-CV.pdf',
+        'Abdelrahman-Hegab-Senior-Software-Engineer-CV.pdf',
+      ],
     ]);
   });
 

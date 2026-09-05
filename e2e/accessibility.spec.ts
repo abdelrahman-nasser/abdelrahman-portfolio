@@ -140,8 +140,11 @@ test.describe('keyboard navigation smoke', () => {
     const downloadCv = page.getByRole('link', { name: 'Download CV' }).first();
     await downloadCv.focus();
     await expect(downloadCv).toBeFocused();
+    const downloading = page.waitForEvent('download');
     await page.keyboard.press('Enter');
-    await expect(page).toHaveURL(/\/cv$/);
+    const download = await downloading;
+    expect(download.suggestedFilename()).toBe('Abdelrahman-Hegab-Senior-Software-Engineer-CV.pdf');
+    await download.cancel();
   });
 
   test('project card links are keyboard-activatable', async ({ page }) => {
@@ -243,7 +246,7 @@ test.describe('mobile navigation ARIA', () => {
       await expect(link).toBeFocused();
     }
 
-    const cvLink = mobileNav.getByRole('link', { name: 'Download CV' });
+    const cvLink = mobileNav.getByRole('link', { name: 'CV', exact: true });
     await expect(cvLink).toBeVisible();
   });
 
