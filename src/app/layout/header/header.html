@@ -19,11 +19,11 @@
 
     <a
       class="site-header__cv-action site-header__cv-action--desktop"
-      routerLink="/cv"
+      [routerLink]="profile.cv.pageUrl"
       routerLinkActive="site-header__cv-action--active"
       ariaCurrentWhenActive="page"
     >
-      <span class="site-header__cv-action-prefix">Download </span>CV
+      CV
     </a>
 
     <button
@@ -65,12 +65,12 @@
 
       <a
         class="site-header__cv-action site-header__cv-action--mobile"
-        routerLink="/cv"
+        [routerLink]="profile.cv.pageUrl"
         routerLinkActive="site-header__cv-action--active"
         ariaCurrentWhenActive="page"
         (click)="closeMenu()"
       >
-        Download CV
+        CV
       </a>
     </nav>
   }

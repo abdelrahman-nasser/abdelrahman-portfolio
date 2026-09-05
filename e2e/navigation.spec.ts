@@ -49,7 +49,7 @@ test('global navigation follows the critical portfolio journey', async ({ page }
     );
   }
 
-  await page.getByRole('link', { name: 'Download CV' }).click();
+  await page.getByRole('link', { name: 'CV', exact: true }).click();
   await expect(page).toHaveURL(/\/cv$/);
   await expect(page.getByRole('heading', { name: 'Curriculum Vitae', level: 1 })).toBeVisible();
 });

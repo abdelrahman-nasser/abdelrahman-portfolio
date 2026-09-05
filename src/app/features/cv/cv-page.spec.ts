@@ -153,14 +153,17 @@ describe('CvPage', () => {
     }
   });
 
-  it('does not render a PDF or download link when no approved public CV asset exists', () => {
-    const links = Array.from(compiled.querySelectorAll<HTMLAnchorElement>('a'));
+  it('offers the approved PDF as a semantic download near the top', () => {
+    const link = compiled.querySelector<HTMLAnchorElement>('.cv-page__header a[download]');
+    expect(link?.textContent?.trim()).toBe('Download CV');
+    expect(link?.getAttribute('href')).toBe(portfolioProfile.cv.pdfUrl);
+    expect(link?.getAttribute('download')).toBe(portfolioProfile.cv.downloadFileName);
+    expect(link?.hasAttribute('role')).toBe(false);
 
-    expect(links.some((link) => link.hasAttribute('download'))).toBe(false);
-    expect(links.some((link) => /\.pdf(?:$|[?#])/i.test(link.getAttribute('href') ?? ''))).toBe(
-      false,
+    const note = compiled.querySelector('.cv-page__download-note');
+    expect(note?.textContent?.trim()).toBe(
+      `PDF · ${portfolioProfile.name} · ${portfolioProfile.role}`,
     );
-    expect(links.some((link) => /download pdf/i.test(link.textContent ?? ''))).toBe(false);
   });
 
   it('does not invent credential metadata, inflated management titles, or metrics', () => {

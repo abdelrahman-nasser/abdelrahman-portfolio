@@ -7,6 +7,16 @@
           <h1 id="cv-title">Curriculum Vitae</h1>
           <p class="cv-page__name">{{ profile.name }}</p>
           <p class="cv-page__headline">{{ profile.headline }}</p>
+          <div class="cv-page__download-group">
+            <a
+              class="cv-page__download"
+              [href]="profile.cv.pdfUrl"
+              [attr.download]="profile.cv.downloadFileName"
+            >
+              Download CV
+            </a>
+            <p class="cv-page__download-note">PDF · {{ profile.name }} · {{ profile.role }}</p>
+          </div>
         </div>
 
         <address class="cv-page__contact-summary">

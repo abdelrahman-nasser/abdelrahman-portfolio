@@ -68,6 +68,11 @@ const canonicalProjects = [
 describe('canonical public content integrity', () => {
   it('preserves the canonical profile identity and contact fields', () => {
     expect(portfolioProfile).toEqual({
+      cv: {
+        pageUrl: '/cv',
+        pdfUrl: '/assets/cv/Abdelrahman-Hegab-Senior-Software-Engineer-CV.pdf',
+        downloadFileName: 'Abdelrahman-Hegab-Senior-Software-Engineer-CV.pdf',
+      },
       name: 'Abdelrahman Hegab',
       role: 'Senior Software Engineer',
       headline: 'Senior Software Engineer | .NET & Angular | Software Architecture & Microservices',
