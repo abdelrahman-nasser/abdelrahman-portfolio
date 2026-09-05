@@ -67,6 +67,7 @@ async function expectMetadata(page: Page, expected: ExpectedMetadata): Promise<v
   const openGraphTitle = page.locator('meta[property="og:title"]');
   const openGraphUrl = page.locator('meta[property="og:url"]');
   const twitterTitle = page.locator('meta[name="twitter:title"]');
+  const canonical = page.locator('link[rel="canonical"]');
   const personStructuredData = page.locator('script[data-person-structured-data]');
 
   await expect(page).toHaveTitle(expected.title);
@@ -76,11 +77,12 @@ async function expectMetadata(page: Page, expected: ExpectedMetadata): Promise<v
   await expect(robots).toHaveAttribute('content', 'index, follow');
   await expect(openGraphTitle).toHaveCount(1);
   await expect(openGraphTitle).toHaveAttribute('content', expected.title);
+  const expectedUrl = `${productionOrigin}${expected.path === '/' ? '/' : `${expected.path}/`}`;
+
   await expect(openGraphUrl).toHaveCount(1);
-  await expect(openGraphUrl).toHaveAttribute(
-    'content',
-    `${productionOrigin}${expected.path === '/' ? '/' : expected.path}`,
-  );
+  await expect(openGraphUrl).toHaveAttribute('content', expectedUrl);
+  await expect(canonical).toHaveCount(1);
+  await expect(canonical).toHaveAttribute('href', expectedUrl);
   await expect(twitterTitle).toHaveCount(1);
   await expect(twitterTitle).toHaveAttribute('content', expected.title);
   await expect(personStructuredData).toHaveCount(expected.personStructuredData ? 1 : 0);

@@ -901,7 +901,7 @@ PR 30  Playwright
 PR 31  Accessibility
 PR 32  CI
 PR 33  Cloudflare Pages
-PR 34  Launch fixes
+PR 34  Final launch polish
 ```
 
 See [`docs/ROADMAP.md`](docs/ROADMAP.md) for details.
