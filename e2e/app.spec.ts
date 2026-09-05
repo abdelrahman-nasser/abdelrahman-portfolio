@@ -57,7 +57,7 @@ test('contact links expose the approved destinations without leaving the site', 
   );
   await expect(main.getByRole('link', { name: /Portfolio/ })).toHaveAttribute(
     'href',
-    'https://abdelrahman-nasser.github.io',
+    'https://abdelrahman-hegab.pages.dev',
   );
 });
 

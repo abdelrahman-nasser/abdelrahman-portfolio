@@ -71,11 +71,13 @@ Senior Software Engineer specializing in .NET, Angular, software architecture, a
 
 ## Portfolio
 
-Current / legacy portfolio:
+Current production portfolio:
+
+**https://abdelrahman-hegab.pages.dev**
+
+Legacy GitHub Pages origin:
 
 **https://abdelrahman-nasser.github.io**
-
-The new portfolio will eventually replace or supersede this URL.
 
 ## LinkedIn
 

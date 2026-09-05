@@ -2,7 +2,7 @@ import type { Page } from '@playwright/test';
 
 import { expect, test } from './support/browser-errors';
 
-const productionOrigin = 'https://abdelrahman-nasser.github.io';
+const productionOrigin = 'https://abdelrahman-hegab.pages.dev';
 
 interface ExpectedMetadata {
   readonly path: string;
