@@ -128,23 +128,47 @@
 
   <section
     class="cv-page__section cv-page__section--alternate section"
-    aria-labelledby="cv-credentials-title"
+    aria-labelledby="cv-certifications-title"
   >
     <app-page-container>
       <div class="cv-page__section-grid">
         <header class="cv-page__section-heading">
-          <p class="cv-page__eyebrow">Microsoft credentials</p>
-          <h2 id="cv-credentials-title">Credentials</h2>
+          <p class="cv-page__eyebrow">Professional credentials</p>
+          <h2 id="cv-certifications-title">Certifications</h2>
         </header>
 
-        <ul class="cv-page__credential-list" role="list">
-          @for (credential of credentials; track credential.id) {
-            <li>
-              <h3>{{ credential.title }}</h3>
-              <p>{{ credential.issuer }}</p>
-            </li>
+        <div class="cv-page__certifications">
+          @for (provider of certificationProviders; track provider.id) {
+            <div class="cv-page__certification-provider" [attr.data-provider]="provider.id">
+              <header class="cv-page__provider-header">
+                <h3 class="cv-page__provider-name">{{ provider.name }}</h3>
+              </header>
+
+              <ul class="cv-page__certification-list" role="list">
+                @for (cert of provider.certifications; track cert.id) {
+                  <li>
+                    <h4>{{ cert.title }}</h4>
+                    <p>{{ cert.issuer }}</p>
+                  </li>
+                }
+              </ul>
+
+              @if (provider.verification; as verification) {
+                <div class="cv-page__transcript-action">
+                  <a
+                    class="cv-page__transcript-link"
+                    [href]="verification.url"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <span>{{ verification.label }}</span>
+                    <span class="cv-page__transcript-icon" aria-hidden="true">↗</span>
+                  </a>
+                </div>
+              }
+            </div>
           }
-        </ul>
+        </div>
       </div>
     </app-page-container>
   </section>

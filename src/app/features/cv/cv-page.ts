@@ -3,12 +3,12 @@ import { RouterLink } from '@angular/router';
 
 import {
   expertiseGroups,
-  portfolioCredentials,
+  portfolioCertificationProviders,
   portfolioExperience,
   portfolioProfile,
 } from '../../content';
 import { PageContainer } from '../../layout/page-container/page-container';
-import type { CredentialItem } from '../../models/credential.models';
+import type { CertificationProvider } from '../../models/certification.models';
 import type { ExperienceItem } from '../../models/experience.models';
 import type { ExpertiseGroup } from '../../models/expertise.models';
 import type { PortfolioProfile } from '../../models/profile.models';
@@ -29,7 +29,8 @@ export class CvPage {
   protected readonly profile: PortfolioProfile = portfolioProfile;
   protected readonly experiences: readonly ExperienceItem[] = portfolioExperience;
   protected readonly expertise: readonly ExpertiseGroup[] = expertiseGroups;
-  protected readonly credentials: readonly CredentialItem[] = portfolioCredentials;
+  protected readonly certificationProviders: readonly CertificationProvider[] =
+    portfolioCertificationProviders;
   protected readonly emailHref = `mailto:${portfolioProfile.email}`;
   protected readonly phoneHref = portfolioProfile.phone
     ? `tel:${portfolioProfile.phone.replace(/\s+/g, '')}`

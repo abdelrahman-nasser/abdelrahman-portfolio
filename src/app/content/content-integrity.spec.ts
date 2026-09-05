@@ -2,7 +2,9 @@ import {
   aiAugmentedEngineering,
   engineeringPrinciples,
   expertiseGroups,
-  portfolioCredentials,
+  microsoftTranscriptVerification,
+  portfolioCertificationProviders,
+  portfolioCertifications,
   portfolioExperience,
   portfolioProfile,
   portfolioProjects,
@@ -207,8 +209,8 @@ describe('canonical public content integrity', () => {
     );
   });
 
-  it('preserves the five canonical Microsoft credentials in order', () => {
-    expect(portfolioCredentials).toEqual([
+  it('preserves the five canonical Microsoft certifications in order', () => {
+    expect(portfolioCertifications).toEqual([
       {
         id: 'mct',
         title: 'Microsoft Certified Trainer (MCT)',
@@ -235,8 +237,37 @@ describe('canonical public content integrity', () => {
         issuer: 'Microsoft',
       },
     ]);
-    expect(new Set(portfolioCredentials.map(({ id }) => id))).toHaveLength(5);
-    expect(new Set(portfolioCredentials.map(({ title }) => title))).toHaveLength(5);
+    expect(new Set(portfolioCertifications.map(({ id }) => id))).toHaveLength(5);
+    expect(new Set(portfolioCertifications.map(({ title }) => title))).toHaveLength(5);
+  });
+
+  it('structures certifications under a provider-neutral model containing the Microsoft provider', () => {
+    expect(portfolioCertificationProviders).toHaveLength(1);
+
+    const microsoft = portfolioCertificationProviders[0];
+    expect(microsoft?.id).toBe('microsoft');
+    expect(microsoft?.name).toBe('Microsoft');
+    expect(microsoft?.certifications).toBe(portfolioCertifications);
+    expect(microsoft?.certifications).toHaveLength(5);
+  });
+
+  it('provides the official Microsoft Learn transcript verification action', () => {
+    const microsoft = portfolioCertificationProviders.find((p) => p.id === 'microsoft');
+
+    expect(microsoft?.verification).toEqual({
+      label: 'View Microsoft Transcript',
+      url: 'https://learn.microsoft.com/en-us/users/abdelrahman91/transcript/vpjp9iq53rz38zk',
+    });
+    expect(microsoftTranscriptVerification.url).toBe(
+      'https://learn.microsoft.com/en-us/users/abdelrahman91/transcript/vpjp9iq53rz38zk',
+    );
+  });
+
+  it('ensures the future-provider model does not require or contain empty groups', () => {
+    for (const provider of portfolioCertificationProviders) {
+      expect(provider.name.trim().length).toBeGreaterThan(0);
+      expect(provider.certifications.length).toBeGreaterThan(0);
+    }
   });
 
   it('keeps private, personal-life, and job-search metadata out of public runtime content', () => {

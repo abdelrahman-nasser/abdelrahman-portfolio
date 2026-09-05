@@ -3,8 +3,10 @@ import { provideRouter } from '@angular/router';
 
 import { routes } from '../../app.routes';
 import {
+  canonicalMicrosoftCertifications,
   expertiseGroups,
-  portfolioCredentials,
+  microsoftTranscriptVerification,
+  portfolioCertificationProviders,
   portfolioExperience,
   portfolioProfile,
 } from '../../content';
@@ -25,11 +27,11 @@ describe('CvPage', () => {
     compiled = fixture.nativeElement as HTMLElement;
   });
 
-  it('renders a labelled CV with exactly one h1 and a logical h2 hierarchy', () => {
+  it('renders a semantically labelled page landmark with the expected heading outline', () => {
     const page = compiled.querySelector('article.cv-page');
     const h1Headings = compiled.querySelectorAll('h1');
-    const h2Headings = Array.from(compiled.querySelectorAll('h2')).map((heading) =>
-      heading.textContent?.trim(),
+    const h2Headings = Array.from(compiled.querySelectorAll('h2')).map((el) =>
+      el.textContent?.trim(),
     );
 
     expect(page?.getAttribute('aria-labelledby')).toBe('cv-title');
@@ -40,7 +42,7 @@ describe('CvPage', () => {
       'Professional Profile',
       'Expertise',
       'Experience',
-      'Credentials',
+      'Certifications',
       'Contact & Portfolio',
     ]);
   });
@@ -49,7 +51,9 @@ describe('CvPage', () => {
     expect(Reflect.get(fixture.componentInstance, 'profile')).toBe(portfolioProfile);
     expect(Reflect.get(fixture.componentInstance, 'experiences')).toBe(portfolioExperience);
     expect(Reflect.get(fixture.componentInstance, 'expertise')).toBe(expertiseGroups);
-    expect(Reflect.get(fixture.componentInstance, 'credentials')).toBe(portfolioCredentials);
+    expect(Reflect.get(fixture.componentInstance, 'certificationProviders')).toBe(
+      portfolioCertificationProviders,
+    );
   });
 
   it('renders the canonical professional headline and complete summary', () => {
@@ -121,18 +125,33 @@ describe('CvPage', () => {
     }
   });
 
-  it('renders every credential in stored order using only canonical title and issuer fields', () => {
-    const credentials = Array.from(compiled.querySelectorAll('.cv-page__credential-list > li'));
+  it('renders every certification in stored order with its provider group and verified transcript action', () => {
+    const providerName = compiled.querySelector(
+      '.cv-page__certification-provider[data-provider="microsoft"] h3',
+    );
+    expect(providerName?.textContent?.trim()).toBe('Microsoft');
 
-    expect(credentials).toHaveLength(portfolioCredentials.length);
+    const certifications = Array.from(
+      compiled.querySelectorAll('.cv-page__certification-list > li'),
+    );
 
-    for (const [index, credential] of portfolioCredentials.entries()) {
-      const renderedCredential = credentials[index];
+    expect(certifications).toHaveLength(canonicalMicrosoftCertifications.length);
 
-      expect(renderedCredential?.querySelector('h3')?.textContent?.trim()).toBe(credential.title);
-      expect(renderedCredential?.querySelector('p')?.textContent?.trim()).toBe(credential.issuer);
-      expect(renderedCredential?.querySelectorAll('time, a, [data-credential-id]')).toHaveLength(0);
+    for (const [index, cert] of canonicalMicrosoftCertifications.entries()) {
+      const rendered = certifications[index];
+
+      expect(rendered?.querySelector('h4')?.textContent?.trim()).toBe(cert.title);
+      expect(rendered?.querySelector('p')?.textContent?.trim()).toBe(cert.issuer);
+      expect(rendered?.querySelectorAll('time, [data-credential-id]')).toHaveLength(0);
     }
+
+    const transcriptLink = compiled.querySelector<HTMLAnchorElement>(
+      '.cv-page__certification-provider[data-provider="microsoft"] .cv-page__transcript-link',
+    );
+    expect(transcriptLink?.textContent?.trim()).toContain(microsoftTranscriptVerification.label);
+    expect(transcriptLink?.getAttribute('href')).toBe(microsoftTranscriptVerification.url);
+    expect(transcriptLink?.getAttribute('target')).toBe('_blank');
+    expect(transcriptLink?.getAttribute('rel')).toBe('noopener noreferrer');
   });
 
   it('renders canonical contact and portfolio links with semantic anchors', () => {

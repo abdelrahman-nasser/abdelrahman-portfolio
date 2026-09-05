@@ -5,8 +5,8 @@ import { portfolioProfile } from '../../content';
 import { engineeringProfile } from '../../content/profile.content';
 import { PageContainer } from '../../layout/page-container/page-container';
 import { AiEngineering } from './ai-engineering/ai-engineering';
+import { Certifications } from './certifications/certifications';
 import { ContactCta } from './contact-cta/contact-cta';
-import { Credentials } from './credentials/credentials';
 import { EngineeringExpertise } from './engineering-expertise/engineering-expertise';
 import { EngineeringPrinciples } from './engineering-principles/engineering-principles';
 import { ExperiencePreview } from './experience-preview/experience-preview';
@@ -16,8 +16,8 @@ import { SelectedWork } from './selected-work/selected-work';
 @Component({
   imports: [
     AiEngineering,
+    Certifications,
     ContactCta,
-    Credentials,
     EngineeringExpertise,
     EngineeringPrinciples,
     ExperiencePreview,

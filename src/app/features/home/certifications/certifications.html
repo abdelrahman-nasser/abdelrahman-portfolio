@@ -1,0 +1,46 @@
+<section class="certifications" aria-labelledby="certifications-title">
+  <app-page-container>
+    <div class="certifications__heading">
+      <p class="certifications__eyebrow">Professional credentials</p>
+      <h2 id="certifications-title">Certifications</h2>
+      <p class="certifications__intro">
+        Professional certifications and credentials across Microsoft and other technology platforms.
+      </p>
+    </div>
+
+    <div class="certifications__providers">
+      @for (provider of providers; track provider.id) {
+        <div class="certifications__provider" [attr.data-provider]="provider.id">
+          <header class="certifications__provider-header">
+            <h3 class="certifications__provider-name">{{ provider.name }}</h3>
+          </header>
+
+          <ul class="certifications__list" role="list">
+            @for (cert of provider.certifications; track cert.id) {
+              <li class="certifications__item">
+                <article class="certifications__card">
+                  <h4 class="certifications__card-title">{{ cert.title }}</h4>
+                  <p class="certifications__card-issuer">{{ cert.issuer }}</p>
+                </article>
+              </li>
+            }
+          </ul>
+
+          @if (provider.verification; as verification) {
+            <div class="certifications__provider-footer">
+              <a
+                class="certifications__transcript-link"
+                [href]="verification.url"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <span>{{ verification.label }}</span>
+                <span class="certifications__transcript-icon" aria-hidden="true">↗</span>
+              </a>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  </app-page-container>
+</section>
