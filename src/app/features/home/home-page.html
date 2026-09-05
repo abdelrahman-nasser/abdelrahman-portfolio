@@ -13,31 +13,23 @@
         </div>
       </div>
 
-      <div class="hero-visual" aria-hidden="true">
+      <section class="hero-visual" aria-labelledby="engineering-profile-title">
         <div class="hero-visual__header">
-          <span>System view</span>
-          <span>04 layers</span>
+          <h2 id="engineering-profile-title">{{ engineeringProfile.heading }}</h2>
+          <span>{{ engineeringProfile.label }}</span>
         </div>
 
-        <div class="hero-visual__flow">
-          <div class="hero-visual__node">
-            <span>01</span>
-            <strong>Web</strong>
-          </div>
-          <div class="hero-visual__node hero-visual__node--accent">
-            <span>02</span>
-            <strong>API</strong>
-          </div>
-          <div class="hero-visual__node">
-            <span>03</span>
-            <strong>Services</strong>
-          </div>
-          <div class="hero-visual__node">
-            <span>04</span>
-            <strong>Data</strong>
-          </div>
-        </div>
-      </div>
+        <dl class="hero-visual__flow">
+          @for (row of engineeringProfile.rows; track row.number) {
+            <div class="hero-visual__node">
+              <dt>
+                <span aria-hidden="true">{{ row.number }}</span> {{ row.category }}
+              </dt>
+              <dd>{{ row.value }}</dd>
+            </div>
+          }
+        </dl>
+      </section>
     </div>
   </app-page-container>
 </section>

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 import { portfolioProfile } from '../../content';
+import { engineeringProfile } from '../../content/profile.content';
 import { PageContainer } from '../../layout/page-container/page-container';
 import { AiEngineering } from './ai-engineering/ai-engineering';
 import { ContactCta } from './contact-cta/contact-cta';
@@ -30,6 +31,7 @@ import { SelectedWork } from './selected-work/selected-work';
   templateUrl: './home-page.html',
 })
 export class HomePage {
+  protected readonly engineeringProfile = engineeringProfile;
   protected readonly profile = portfolioProfile;
   protected readonly positioning = portfolioProfile.headline
     .split(' | ')
