@@ -22,6 +22,18 @@ export const routes: Routes = [
     } satisfies SeoRouteData,
   },
   {
+    path: 'lab/cinematic-hero',
+    loadComponent: () =>
+      import('./features/home/cinematic-hero/cinematic-hero').then((page) => page.CinematicHero),
+    data: {
+      seo: {
+        title: 'Cinematic Hero Lab | Abdelrahman Hegab',
+        description:
+          'Private visual experiment for a scroll-driven portfolio introduction.',
+      },
+    } satisfies SeoRouteData,
+  },
+  {
     path: 'experience',
     loadComponent: () =>
       import('./features/experience/experience-page').then((page) => page.ExperiencePage),
