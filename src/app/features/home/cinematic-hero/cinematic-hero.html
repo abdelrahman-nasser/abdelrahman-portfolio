@@ -1,0 +1,93 @@
+<section #intro class="cinematic-hero" aria-labelledby="hero-title">
+  <div class="cinematic-hero__sticky">
+    <div class="cinematic-hero__backdrop" aria-hidden="true"></div>
+
+    <div class="cinematic-hero__scene" aria-hidden="true">
+      <svg
+        class="cinematic-hero__connectors"
+        viewBox="0 0 100 100"
+        preserveAspectRatio="none"
+      >
+        <path d="M19 31 L41 31 L65 31" />
+        <path d="M65 31 L24 58" />
+        <path d="M65 31 L48 58" />
+        <path d="M65 31 L72 58" />
+        <path d="M48 58 L36 78" />
+        <path d="M48 58 L62 78" />
+      </svg>
+
+      @for (node of nodes; track node.label) {
+        <div #sceneNode class="cinematic-hero__node">
+          <span>{{ node.label }}</span>
+          <small>{{ node.detail }}</small>
+        </div>
+      }
+    </div>
+
+    <div class="cinematic-hero__phase" aria-hidden="true">
+      <span class="cinematic-hero__phase-label cinematic-hero__phase-label--explore">
+        COMPLEX SYSTEMS
+      </span>
+      <span class="cinematic-hero__phase-label cinematic-hero__phase-label--organize">
+        ARCHITECTURE
+      </span>
+      <span class="cinematic-hero__phase-label cinematic-hero__phase-label--reveal">
+        ENGINEERING
+      </span>
+    </div>
+
+    <div class="cinematic-hero__progress" aria-hidden="true">
+      <span></span>
+    </div>
+
+    <div class="cinematic-hero__final">
+      <app-page-container>
+        <div class="cinematic-hero__final-layout">
+          <div class="cinematic-hero__content">
+            <p class="cinematic-hero__eyebrow">{{ profile.role }}</p>
+            <h1 id="hero-title">{{ profile.name }}</h1>
+            <p class="cinematic-hero__positioning">{{ positioning }}</p>
+            <p class="cinematic-hero__support">{{ profile.supportLine }}</p>
+
+            <div class="cinematic-hero__actions">
+              <a class="cinematic-hero__action cinematic-hero__action--primary" routerLink="/projects">
+                View My Work
+              </a>
+              <a
+                class="cinematic-hero__action cinematic-hero__action--secondary"
+                [href]="profile.cv.pdfUrl"
+                [attr.download]="profile.cv.downloadFileName"
+              >
+                Download CV
+              </a>
+            </div>
+          </div>
+
+          <section
+            class="cinematic-hero__facts"
+            aria-labelledby="cinematic-engineering-profile-title"
+          >
+            <div class="cinematic-hero__facts-header">
+              <h2 id="cinematic-engineering-profile-title">{{ engineeringProfile.heading }}</h2>
+              <span>{{ engineeringProfile.label }}</span>
+            </div>
+
+            <dl class="cinematic-hero__facts-list">
+              @for (row of engineeringProfile.rows; track row.number) {
+                <div class="cinematic-hero__fact">
+                  <dt>
+                    <span aria-hidden="true">{{ row.number }}</span>
+                    {{ row.category }}
+                  </dt>
+                  <dd>{{ row.value }}</dd>
+                </div>
+              }
+            </dl>
+          </section>
+        </div>
+      </app-page-container>
+    </div>
+
+    <p class="cinematic-hero__scroll-cue" aria-hidden="true">Scroll to shape the system</p>
+  </div>
+</section>
